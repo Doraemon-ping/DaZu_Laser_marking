@@ -16,5 +16,21 @@ namespace DaZu_Laser_marking
         {
             InitializeComponent();
         }
+
+        private void 网络配置ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void 主页ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form2 f2 = new Form2();
+            MyTool.showForm(f2,this.panel1);
+        }
     }
 }
