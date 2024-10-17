@@ -19,7 +19,8 @@ namespace DaZu_Laser_marking
 
         private void 网络配置ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Form3 f3 = new Form3();
+            MyTool.showForm(f3,this.panel1);
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -31,6 +32,19 @@ namespace DaZu_Laser_marking
         {
             Form2 f2 = new Form2();
             MyTool.showForm(f2,this.panel1);
+        }
+
+        private void 网络配置MESToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form4 f4 = new Form4();
+            MyTool.showForm(f4,this.panel1);
+        }
+        
+        private void 图号管理ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form5 f5 = new Form5();
+            MyTool.showForm(f5,this.panel1);
+
         }
     }
 }

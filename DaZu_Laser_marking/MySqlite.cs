@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.Data;
+using System.Data.SqlClient;
+//using Microsoft.Office.Interop.Excel;
 
 namespace DaZu_Laser_marking
 {
@@ -168,5 +170,72 @@ namespace DaZu_Laser_marking
             }
             return dataTable;
         }
+
+        public List<object> getByIdName(int id , string name) {
+            List<object> result = new List<object>();
+            try
+            {
+                using (var connection = new SQLiteConnection(connectionString))
+                {
+                    string selectQuery = "SELECT SETTING.IP , SETTING.PORT FROM SETTING WHERE SETTING.ID = @ID AND SETTING.NAME = @NAME;";
+                    connection.Open();
+
+                    using (var command = new SQLiteCommand(selectQuery, connection))
+                    {
+                        // 添加查询参数
+                        command.Parameters.AddWithValue("@ID", id);
+                        command.Parameters.AddWithValue("@NAME", name);
+
+                        using (SQLiteDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read()) // 读取一行
+                            {
+                                result.Add(reader[0]);
+                                result.Add(reader[1]);
+
+
+                                // Console.WriteLine($"Column1: {column1Value}, Column2: {column2Value}");
+                            }
+
+
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("查询失败！" + e.Message);
+
+            }
+            return result;
+        }
+
+        public void update_ip(string ip, string port , int id , string name) {
+
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+                string query = "update SETTING SET IP = @IP,PORT = @PORT WHERE ID=@ID AND NAME= @NAME";
+
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@IP", ip);
+                    command.Parameters.AddWithValue("@PORT", port);
+                    command.Parameters.AddWithValue("@ID", id);
+                    command.Parameters.AddWithValue("@NAME", name);
+
+
+                    int rowsAffected = command.ExecuteNonQuery(); // 执行更新
+                    Console.WriteLine($"{rowsAffected} rows updated.");
+                }
+            }
+
+
+
+        }
+    
+    
+    
+    
     }
 }

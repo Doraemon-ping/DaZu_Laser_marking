@@ -28,5 +28,10 @@ namespace DaZu_Laser_marking
         {
             Close();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
