@@ -41,23 +41,27 @@
             this.网络配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.网络配置MESToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.图号管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.eXITToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox5 = new System.Windows.Forms.TextBox();
-            this.eXITToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // menuStrip1
             // 
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.主页ToolStripMenuItem,
             this.数据下载ToolStripMenuItem,
@@ -66,15 +70,14 @@
             this.eXITToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1654, 27);
+            this.menuStrip1.Size = new System.Drawing.Size(1362, 34);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // 主页ToolStripMenuItem
             // 
             this.主页ToolStripMenuItem.Name = "主页ToolStripMenuItem";
-            this.主页ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.主页ToolStripMenuItem.Size = new System.Drawing.Size(62, 30);
             this.主页ToolStripMenuItem.Text = "主页";
             this.主页ToolStripMenuItem.Click += new System.EventHandler(this.主页ToolStripMenuItem_Click);
             // 
@@ -85,25 +88,25 @@
             this.使用文档下载ToolStripMenuItem,
             this.生产日志ToolStripMenuItem});
             this.数据下载ToolStripMenuItem.Name = "数据下载ToolStripMenuItem";
-            this.数据下载ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
+            this.数据下载ToolStripMenuItem.Size = new System.Drawing.Size(98, 30);
             this.数据下载ToolStripMenuItem.Text = "数据下载";
             // 
             // 生产数据下载ToolStripMenuItem
             // 
             this.生产数据下载ToolStripMenuItem.Name = "生产数据下载ToolStripMenuItem";
-            this.生产数据下载ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.生产数据下载ToolStripMenuItem.Size = new System.Drawing.Size(218, 34);
             this.生产数据下载ToolStripMenuItem.Text = "生产数据下载";
             // 
             // 使用文档下载ToolStripMenuItem
             // 
             this.使用文档下载ToolStripMenuItem.Name = "使用文档下载ToolStripMenuItem";
-            this.使用文档下载ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.使用文档下载ToolStripMenuItem.Size = new System.Drawing.Size(218, 34);
             this.使用文档下载ToolStripMenuItem.Text = "使用文档下载";
             // 
             // 生产日志ToolStripMenuItem
             // 
             this.生产日志ToolStripMenuItem.Name = "生产日志ToolStripMenuItem";
-            this.生产日志ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.生产日志ToolStripMenuItem.Size = new System.Drawing.Size(218, 34);
             this.生产日志ToolStripMenuItem.Text = "生产日志";
             // 
             // 配置ToolStripMenuItem
@@ -113,35 +116,42 @@
             this.网络配置ToolStripMenuItem,
             this.网络配置MESToolStripMenuItem});
             this.配置ToolStripMenuItem.Name = "配置ToolStripMenuItem";
-            this.配置ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.配置ToolStripMenuItem.Size = new System.Drawing.Size(62, 30);
             this.配置ToolStripMenuItem.Text = "配置";
             // 
             // 读码器配置ToolStripMenuItem
             // 
             this.读码器配置ToolStripMenuItem.Name = "读码器配置ToolStripMenuItem";
-            this.读码器配置ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.读码器配置ToolStripMenuItem.Size = new System.Drawing.Size(272, 34);
             this.读码器配置ToolStripMenuItem.Text = "读码器配置";
             // 
             // 网络配置ToolStripMenuItem
             // 
             this.网络配置ToolStripMenuItem.Name = "网络配置ToolStripMenuItem";
-            this.网络配置ToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.网络配置ToolStripMenuItem.Size = new System.Drawing.Size(272, 34);
             this.网络配置ToolStripMenuItem.Text = "网络配置（打标机）";
             this.网络配置ToolStripMenuItem.Click += new System.EventHandler(this.网络配置ToolStripMenuItem_Click);
             // 
             // 网络配置MESToolStripMenuItem
             // 
             this.网络配置MESToolStripMenuItem.Name = "网络配置MESToolStripMenuItem";
-            this.网络配置MESToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.网络配置MESToolStripMenuItem.Size = new System.Drawing.Size(272, 34);
             this.网络配置MESToolStripMenuItem.Text = "网络配置（MES）";
             this.网络配置MESToolStripMenuItem.Click += new System.EventHandler(this.网络配置MESToolStripMenuItem_Click);
             // 
             // 图号管理ToolStripMenuItem
             // 
             this.图号管理ToolStripMenuItem.Name = "图号管理ToolStripMenuItem";
-            this.图号管理ToolStripMenuItem.Size = new System.Drawing.Size(92, 21);
+            this.图号管理ToolStripMenuItem.Size = new System.Drawing.Size(134, 30);
             this.图号管理ToolStripMenuItem.Text = "图号配方管理";
             this.图号管理ToolStripMenuItem.Click += new System.EventHandler(this.图号管理ToolStripMenuItem_Click);
+            // 
+            // eXITToolStripMenuItem
+            // 
+            this.eXITToolStripMenuItem.Name = "eXITToolStripMenuItem";
+            this.eXITToolStripMenuItem.Size = new System.Drawing.Size(63, 28);
+            this.eXITToolStripMenuItem.Text = "EXIT";
+            this.eXITToolStripMenuItem.Click += new System.EventHandler(this.eXITToolStripMenuItem_Click);
             // 
             // panel1
             // 
@@ -149,7 +159,7 @@
             this.panel1.Location = new System.Drawing.Point(18, 42);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1618, 866);
+            this.panel1.Size = new System.Drawing.Size(0, 0);
             this.panel1.TabIndex = 2;
             // 
             // textBox1
@@ -208,17 +218,20 @@
             this.textBox5.TabIndex = 7;
             this.textBox5.Text = "数据库连接状态";
             // 
-            // eXITToolStripMenuItem
+            // panel2
             // 
-            this.eXITToolStripMenuItem.Name = "eXITToolStripMenuItem";
-            this.eXITToolStripMenuItem.Size = new System.Drawing.Size(46, 21);
-            this.eXITToolStripMenuItem.Text = "EXIT";
+            this.panel2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel2.Location = new System.Drawing.Point(18, 37);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1330, 850);
+            this.panel2.TabIndex = 8;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1654, 937);
+            this.ClientSize = new System.Drawing.Size(1362, 898);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.textBox4);
             this.Controls.Add(this.textBox3);
@@ -231,6 +244,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "客户码转换主页";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -259,6 +273,7 @@
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.ToolStripMenuItem 主页ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem eXITToolStripMenuItem;
+        private System.Windows.Forms.Panel panel2;
     }
 }
 

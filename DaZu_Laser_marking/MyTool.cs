@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DaZu_Laser_marking.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,5 +39,64 @@ namespace DaZu_Laser_marking
             return file;
         }
 
+        public static int isLorR(string code)
+        {
+
+            int number = 24;
+
+            string LH = "LH";
+            string RH = "RH";
+            string BZ = "FK";
+
+            int codeLenght = code.Length;
+            string code1;
+            string code2;
+
+            System.Console.WriteLine(codeLenght);
+
+
+            if (codeLenght != number)
+            {
+                return 0;
+            }
+            else
+            {
+                code1 = code.Substring(3, 2);
+                code2 = code.Substring(5, 2);
+            }//位数不对，直接返回
+
+            code1 = code.Substring(3, 2);
+            code2 = code.Substring(5, 2);
+
+            bool isBz = BZ.Equals(code1);
+            bool isBz1 = LH.Equals(code2);
+            bool isBz2 = RH.Equals(code2);
+
+
+            if (isBz&&isBz1) { return 1; }
+
+            if (isBz && isBz2) { return 2; }
+
+
+
+            return 0;
+
+        }
+
+
+        public static string createKHM(int number) {
+
+
+
+
+
+            return null;
+        
+ 
+        
+        }
+
     }
+
+  
 }
