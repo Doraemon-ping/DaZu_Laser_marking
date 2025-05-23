@@ -1,4 +1,5 @@
 ﻿using DaZu_Laser_marking.Model;
+using DaZu_Laser_marking.SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace DaZu_Laser_marking
 {
     internal class MyTool
     {
+       
+
         //切换窗口
         public static void showForm(Form form3, Panel p)
         {
@@ -54,8 +57,7 @@ namespace DaZu_Laser_marking
 
             System.Console.WriteLine(codeLenght);
 
-
-            if (codeLenght != number)
+            if (codeLenght != number )
             {
                 return 0;
             }
@@ -84,16 +86,59 @@ namespace DaZu_Laser_marking
         }
 
 
-        public static string createKHM(int number) {
+        public static string createKHM_L(Peifang L) {
+
+            dataSql dataSql = new dataSql();
+            int number = dataSql.getNumner()+1;
+
+        DateTime now = DateTime.Now;
+            string TH = L.TH_L;
+            string s1 = "[>";
+            string s2 = "VAI";
+            string year = now.Year.ToString();
+            DateTime dt = new DateTime(now.Year, 1, 1);
+            int days = (now.Date - dt.Date).Days+1;
+            string s3 = year + days.ToString();
+            string s4 = "V88896S1";
+            string s5 = "MZK08";
+            string s6 = number.ToString("00000");
+            return (s1 + TH + s2 + s3 + s4 + s5 + s6).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
 
 
 
+        }
+
+        public static string createKHM_R(Peifang R)
+        {
+            dataSql dataSql = new dataSql();
+            int number = dataSql.getNumner() + 1;
+            DateTime now = DateTime.Now;
+            string TH = R.TH_R;
+            string s1 = "[>";
+            string s2 = "VAI";
+            string year = now.Year.ToString();
+            DateTime dt = new DateTime(now.Year, 1, 1);
+            int days = (now.Date - dt.Date).Days + 1;
+            string s3 = year + days.ToString();
+            string s4 = "V88896S1";
+            string s5 = "MZK08";
+            string s6 = number.ToString("00000");
+            return (s1 + TH + s2 + s3 + s4 + s5 + s6).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
 
 
-            return null;
-        
- 
-        
+
+        }
+
+        public static bool isNotCm(string code ){
+            //不重码
+            dataSql dataSql = new dataSql();
+            int num = dataSql.is_Only(code);
+
+            if (num == 0) { return true; }
+            else { 
+            return false;
+                    }
+
         }
 
     }

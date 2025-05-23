@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DaZu_Laser_marking.SQLite;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,49 +13,48 @@ namespace DaZu_Laser_marking
 {
     public partial class Form1 : Form
     {
+        dataSql ds;
+        DataTable dt;
         public Form1()
         {
             InitializeComponent();
+            ds = new dataSql();
         }
 
-        private void 网络配置ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            Form3 f3 = new Form3();
-            MyTool.showForm(f3,this.panel2);
+            this.dataGridView1.DataSource = null;
+
+            dt = ds.getData();
+
+            this.dataGridView1.DataSource = dt;
+
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
-
+            if (dt == null) { MessageBox.Show("请先查询！"); }
+            else
+            {
+                MyExcel.get_Excel_fromDateGridView(this.dataGridView1);
+            }
         }
 
-        private void 主页ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
-            Form6 f2 = new Form6();
-            MyTool.showForm(f2,this.panel2);
+            this.dataGridView1.DataSource = null;
+
+            string barcode = this.textBox1.Text;
+
+            dt = ds.getByCode(barcode);
+
+            this.dataGridView1.DataSource = dt;
+
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
-        private void 网络配置MESToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form4 f4 = new Form4();
-            MyTool.showForm(f4,this.panel2);
-        }
         
-        private void 图号管理ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form5 f5 = new Form5();
-            MyTool.showForm(f5,this.panel2);
-
-        }
-
-        private void eXITToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            
-        }
     }
 }
