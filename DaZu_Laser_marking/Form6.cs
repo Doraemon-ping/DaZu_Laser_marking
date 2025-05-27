@@ -20,6 +20,7 @@ using DaZu_Laser_marking.Model;
 using DaZu_Laser_marking.SQLite;
 using static System.Data.Entity.Infrastructure.Design.Executor;
 using System.Data.SqlClient;
+using DaZu_Laser_marking.NET;
 //using Aqua.EnumerableExtensions;
 
 namespace DaZu_Laser_marking
@@ -38,35 +39,62 @@ namespace DaZu_Laser_marking
         bool isNotCm = false;//是否不重码
         bool isOK = false;//是否可标刻
         int ms = 1; //模式，1正常 ， 2 返工
+        bool is_L = false;
+        bool is_R = false;
+        bool is_MES = false;
+        string IP_L;
+        string IP_R;
+        string IP_mes;
+        string Port_L;
+        string Port_R;
+        string Port_mes;
+        DaBiao LD;
+        DaBiao RD;
+        Thread CheekIP;
         
 
         public Form6()
         {
             InitializeComponent();
             chushihau();
-          
-
         }
 
         public void chushihau() {
-
-           
             getPF();
-
             //控件更新线程
             fresh = new Thread(flash);
             fresh.Start();
-
-            
-
 
             //初始化报工实体实体
             getAdMod();
 
             dsq = new dataSql();
 
+            MySqlite mySqlite = new MySqlite();
+            List<object> res1 = new List<object>();
+            res1 = mySqlite.getByIdName(1, "打标机1");
+            IP_L = res1[0].ToString();
+            Port_L = res1[1].ToString();
+
+            List<object> res2 = new List<object>();
+            res2 = mySqlite.getByIdName(2, "打标机2");
+            IP_R = res2[0].ToString();
+            Port_R = res2[1].ToString();
+
+            List<object> res3 = new List<object>();
+            res3 = mySqlite.getByIdName(3, "数据库");
+
+            List<object> res4 = new List<object>();
+            res4 = mySqlite.getByIdName(4, "WEB");
+           IP_mes = res4[0].ToString();
+            Port_mes = res4[1].ToString();
+
+            //检查是否连接
+            CheekIP = new Thread(cheek);
+            CheekIP.Start();
 
 
+            LD = new DaBiao(1, "打标机1");
 
 
         }
@@ -219,15 +247,93 @@ namespace DaZu_Laser_marking
                     }
                 }
 
+               
+                if (is_L == false)
+                {
+                    if (button6.InvokeRequired)
+                    {
+                        button6.Invoke(new Action(() => button6.BackColor = Color.Red));
+                    }
+                    else
+                    {
+                        button6.BackColor = Color.Red;
+                    }
+                }
 
-                Thread.Sleep(1000);
+                if (is_L == true)
+                {
 
+                    if (button6.InvokeRequired)
+                    {
+                        button6.Invoke(new Action(() => button6.BackColor = Color.Green));
+                    }
+                    else
+                    {
+                        button6.BackColor = Color.Green;
+                    }
+                }
+                //R
+                if (is_R == false)
+                {
+                    if (button7.InvokeRequired)
+                    {
+                        button7.Invoke(new Action(() => button7.BackColor = Color.Red));
+                    }
+                    else
+                    {
+                        button7.BackColor = Color.Red;
+                    }
+                }
 
+                if (is_R == true)
+                {
+
+                    if (button7.InvokeRequired)
+                    {
+                        button7.Invoke(new Action(() => button7.BackColor = Color.Green));
+                    }
+                    else
+                    {
+                        button7.BackColor = Color.Green;
+                    }
+                }
+                //MES
+                if (is_MES == false)
+                {
+                    if (button8.InvokeRequired)
+                    {
+                        button8.Invoke(new Action(() => button8.BackColor = Color.Red));
+                    }
+                    else
+                    {
+                        button8.BackColor = Color.Red;
+                    }
+                }
+
+                if (is_MES == true)
+                {
+
+                    if (button8.InvokeRequired)
+                    {
+                        button8.Invoke(new Action(() => button8.BackColor = Color.Green));
+                    }
+                    else
+                    {
+                        button8.BackColor = Color.Green;
+                    }
+                }
+                Thread.Sleep(100);
             }
+        }
 
-       
-
-            
+        public void cheek() {
+            while (true)
+            {
+                is_L = MyNet.isConnettionToIp(IP_L);
+                is_R = MyNet.isConnettionToIp(IP_R);
+                is_MES = MyNet.isConnettionToIp(IP_mes);
+            }
+            Thread.Sleep(500);
 
         }
 
@@ -360,7 +466,7 @@ namespace DaZu_Laser_marking
             }
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private async void button5_Click(object sender, EventArgs e)
         {
             string okBarcode="";
             string okHbarcode="";
@@ -406,6 +512,20 @@ namespace DaZu_Laser_marking
 
                     string json = System.Text.Json.JsonSerializer.Serialize(mesMod);
                     MessageBox.Show(json);
+
+
+                    if (b_bt1 == 1)//L
+                    {
+                        
+
+
+
+
+
+
+
+
+                    }
 
 
 

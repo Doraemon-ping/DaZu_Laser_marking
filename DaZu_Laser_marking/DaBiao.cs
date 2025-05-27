@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DaZu_Laser_marking.Model;
 using Newtonsoft.Json;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DaZu_Laser_marking
 {
@@ -14,234 +20,235 @@ namespace DaZu_Laser_marking
     {
         private string IP;
         private string PORT;
+        TcpClient tcpClient;
+        NetworkStream stream;
+        private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
+
+
+        public string IP1 { get => IP; set => IP = value; }
+        public string PORT1 { get => PORT; set => PORT = value; }
+
+        private async Task SendMessageAsync(string message)
+        {
+            byte[] buffer = Encoding.UTF8.GetBytes(message);
+            await stream.WriteAsync(buffer, 0, buffer.Length);
+        }
+
+        private async Task<string> ReceiveMessageAsync()
+        {
+            byte[] buffer = new byte[1024];
+            int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+            return Encoding.UTF8.GetString(buffer, 0, bytesRead);
+        }
+
 
         public DaBiao(int id, string name)
         {
 
             MySqlite msl = new MySqlite();
             List<object> result = msl.getByIdName(id, name);
-            IP = result[0].ToString();
-            PORT = result.ToString();
+            IP1 = result[0].ToString();
+            PORT1 = result[1].ToString();
+            Console.WriteLine(IP + ":" + PORT);
+            tcpClient = new TcpClient(IP1,int.Parse(PORT1));
+            stream = tcpClient.GetStream();
+
+          
 
         }
         //登录
-        public string Login()
+        public async Task<string>  Login()
         {
-            using (var client = new TcpClient(IP, int.Parse(PORT)))
+            // 保证发送+接收的原子性
+            await semaphore.WaitAsync();
+            try
             {
-                using (var stream = client.GetStream())
+                var requestData = new
                 {
-                    // 构建请求
-                    var requestData = new
-                    {
-                        F = "L",
-                        P = "123456"
-                    };
-                    var requestJson = JsonConvert.SerializeObject(requestData) + "#";
+                    F = "Login_C2S",
+                    password = "123456"
+                };
+                var requestJson = JsonConvert.SerializeObject(requestData) + "#";
 
-                    // 发送请求
-                    byte[] data = Encoding.UTF8.GetBytes(requestJson);
-                    stream.Write(data, 0, data.Length);
-
-                    // 接收响应
-                    byte[] responseData = new byte[256];
-                    int bytes = stream.Read(responseData, 0, responseData.Length);
-                    return Encoding.UTF8.GetString(responseData, 0, bytes);
-                }
+                await SendMessageAsync(requestJson);
+                return await ReceiveMessageAsync();
+            }
+            finally
+            {
+                semaphore.Release();
             }
 
         }
 
         //获取所有设备
-        public string GetAllEqupments() {
-
-            using (var client = new TcpClient(IP, int.Parse(PORT)))
+        public async Task<string> GetAllEqupments()
+        {
+            await semaphore.WaitAsync();
+            try
             {
-                using (var stream = client.GetStream())
+                var requestData = new
                 {
-                    // 构建请求
-                    var requestData = new
-                    {
-                        F = "GADS"
-                    };
-                    var requestJson = JsonConvert.SerializeObject(requestData) + "#";
+                    F = "GetAllDevices_C2S"
+                };
+                var requestJson = JsonConvert.SerializeObject(requestData) + "#";
 
-                    // 发送请求
-                    byte[] data = Encoding.UTF8.GetBytes(requestJson);
-                    stream.Write(data, 0, data.Length);
-
-                    // 接收响应
-                    byte[] responseData = new byte[256];
-                    int bytes = stream.Read(responseData, 0, responseData.Length);
-                    return Encoding.UTF8.GetString(responseData, 0, bytes);
-                }
+                await SendMessageAsync(requestJson);
+                return await ReceiveMessageAsync();
             }
+            finally
+            {
+                semaphore.Release();
+            }
+
         }
 
         //获取所有文档
-        public string GetAllWords() {
-            using (var client = new TcpClient(IP, int.Parse(PORT)))
+        public async Task<string> GetAllWords()
+        {
+            // 构建请求
+           
+            await semaphore.WaitAsync();
+            try
             {
-                using (var stream = client.GetStream())
+                var requestData = new
                 {
-                    // 构建请求
-                    var requestData = new
-                    {
-                        F = "GADC"
-                    };
-                    var requestJson = JsonConvert.SerializeObject(requestData) + "#";
+                    F = "GetAllDocs_C2S"
+                };
+                var requestJson = JsonConvert.SerializeObject(requestData) + "#";
 
-                    // 发送请求
-                    byte[] data = Encoding.UTF8.GetBytes(requestJson);
-                    stream.Write(data, 0, data.Length);
-
-                    // 接收响应
-                    byte[] responseData = new byte[256];
-                    int bytes = stream.Read(responseData, 0, responseData.Length);
-                    return Encoding.UTF8.GetString(responseData, 0, bytes);
-                }
+                await SendMessageAsync(requestJson);
+                return await ReceiveMessageAsync();
             }
-
+            finally
+            {
+                semaphore.Release();
+            }
         }
 
         //打开文件
-        public string OpenFileDialog() {
-            string path = MyTool.get_filePath();
-            using (var client = new TcpClient(IP, int.Parse(PORT)))
+        public async Task<string> OpenFileDialog(string path)
+        {
+            // 保证发送+接收的原子性
+            await semaphore.WaitAsync();
+            try
             {
-                using (var stream = client.GetStream())
+                // path = MyTool.get_filePath();
+                var requestData = new
                 {
-                    // 构建请求
-                    var requestData = new
-                    {
-                        F = "DOC",
-                        DP = path
-                    };
-                    var requestJson = JsonConvert.SerializeObject(requestData) + "#";
-
-                    // 发送请求
-                    byte[] data = Encoding.UTF8.GetBytes(requestJson);
-                    stream.Write(data, 0, data.Length);
-
-                    // 接收响应
-                    byte[] responseData = new byte[256];
-                    int bytes = stream.Read(responseData, 0, responseData.Length);
-                    return Encoding.UTF8.GetString(responseData, 0, bytes);
-                }
+                    F = "OpenDocPath_C2S",
+                    docPath = path
+                };
+                var requestJson = JsonConvert.SerializeObject(requestData) + "#";
+                await SendMessageAsync(requestJson);
+                return await ReceiveMessageAsync();
             }
-        }
-
-        //保存文档
-        public string SaveAllFileDialog() {
-            using (var client = new TcpClient(IP, int.Parse(PORT)))
+            finally
             {
-                using (var stream = client.GetStream())
-                {
-                    // 构建请求
-                    var requestData = new
-                    {
-                        F = "SDC",
-                        DC = ""
-                    };
-                    var requestJson = JsonConvert.SerializeObject(requestData) + "#";
-
-                    // 发送请求
-                    byte[] data = Encoding.UTF8.GetBytes(requestJson);
-                    stream.Write(data, 0, data.Length);
-
-                    // 接收响应
-                    byte[] responseData = new byte[256];
-                    int bytes = stream.Read(responseData, 0, responseData.Length);
-                    return Encoding.UTF8.GetString(responseData, 0, bytes);
-                }
+                semaphore.Release();
             }
-
-
 
         }
 
-        //关闭所有文档
-        public string CloseAllFileDialog() {
-            using (var client = new TcpClient(IP, int.Parse(PORT)))
-            {
-                using (var stream = client.GetStream())
-                {
-                    // 构建请求
-                    var requestData = new
-                    {
-                        F = "CDC",
-                        DC = ""
-                    };
-                    var requestJson = JsonConvert.SerializeObject(requestData) + "#";
-
-                    // 发送请求
-                    byte[] data = Encoding.UTF8.GetBytes(requestJson);
-                    stream.Write(data, 0, data.Length);
-
-                    // 接收响应
-                    byte[] responseData = new byte[256];
-                    int bytes = stream.Read(responseData, 0, responseData.Length);
-                    return Encoding.UTF8.GetString(responseData, 0, bytes);
-                }
-            }
-
-
-        }
 
         //开始标刻
-        public string StartMarking(string word ,List<string> equpment ) {
-            using (var client = new TcpClient(IP, int.Parse(PORT)))
+        public async Task<string> StartMarking(List<string> EQ)
+        {
+            // 保证发送+接收的原子性
+            await semaphore.WaitAsync();
+            try
             {
-                using (var stream = client.GetStream())
+                // path = MyTool.get_filePath();
+                var requestData = new
                 {
-                    // 构建请求
-                    var requestData = new
-                    {
-                        F = "M",
-                        DS = equpment
-                    };
-                    var requestJson = JsonConvert.SerializeObject(requestData) + "#";
-
-                    // 发送请求
-                    byte[] data = Encoding.UTF8.GetBytes(requestJson);
-                    stream.Write(data, 0, data.Length);
-
-                    // 接收响应
-                    byte[] responseData = new byte[256];
-                    int bytes = stream.Read(responseData, 0, responseData.Length);
-                    return Encoding.UTF8.GetString(responseData, 0, bytes);
-                }
+                    F = "DevsMark_C2S",
+                    devs = EQ.ToArray()
+                };
+                var requestJson = JsonConvert.SerializeObject(requestData) + "#";
+                await SendMessageAsync(requestJson);
+                return await ReceiveMessageAsync();
+            }
+            finally
+            {
+                semaphore.Release();
             }
         }
 
 
-        public string StartMarkingByWord(string words , List<string> equpment) {
-            using (var client = new TcpClient(IP, int.Parse(PORT)))
+        public async Task<string> StartMarkingByWord(string words, List<string> equpment)
+        {
+            // 保证发送+接收的原子性
+            await semaphore.WaitAsync();
+            try
             {
-                using (var stream = client.GetStream())
+                // path = MyTool.get_filePath();
+                var requestData = new
                 {
-                    // 构建请求
-                    var requestData = new
-                    {
-                        F = "ME",
-                        DC= words,
-                        DS = equpment
-                    };
-                    var requestJson = JsonConvert.SerializeObject(requestData) + "#";
+                    F = "ME",
+                    DC = words,
+                    DS = equpment
+                };
+                var requestJson = JsonConvert.SerializeObject(requestData) + "#";
+                await SendMessageAsync(requestJson);
+                return await ReceiveMessageAsync();
+            }
+            finally
+            {
+                semaphore.Release();
+            }
+        }
 
-                    // 发送请求
-                    byte[] data = Encoding.UTF8.GetBytes(requestJson);
-                    stream.Write(data, 0, data.Length);
+        public async Task<string> getTextValue(string TEXT)
+        {
+            // 保证发送+接收的原子性
+            await semaphore.WaitAsync();
+            try
+            {
+                // path = MyTool.get_filePath();
+                var requestData = new
+                {
+                    F = "GetContentsByTextName_C2S",
+                    doc = "1.orzx",
+                    shapeName = TEXT
+                };
+                var requestJson = JsonConvert.SerializeObject(requestData) + "#";
+                await SendMessageAsync(requestJson);
+                return await ReceiveMessageAsync();
+            }
+            finally
+            {
+                semaphore.Release();
+            }
+           
+        }
 
-                    // 接收响应
-                    byte[] responseData = new byte[256];
-                    int bytes = stream.Read(responseData, 0, responseData.Length);
-                    return Encoding.UTF8.GetString(responseData, 0, bytes);
-                }
+
+        public async Task<string> upDateText(int p,string t,string docName)
+        {
+            // 保证发送+接收的原子性
+            await semaphore.WaitAsync();
+            try
+            {
+                // path = MyTool.get_filePath();
+                var requestData = new
+                {
+                    F = "SetTextInfo_C2S",
+                    doc = docName,
+                    PosIndex = p,
+                    Text = t
+                };
+                var requestJson = JsonConvert.SerializeObject(requestData) + "#";
+                await SendMessageAsync(requestJson);
+                return await ReceiveMessageAsync();
+            }
+            finally
+            {
+                semaphore.Release();
             }
 
-
         }
+
+
 
     }
 }
+

@@ -55,6 +55,9 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -335,12 +338,42 @@
             this.textBox1.TabIndex = 6;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(12, 794);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(145, 33);
+            this.button6.TabIndex = 7;
+            this.button6.Text = "打标机L";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(166, 794);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(145, 33);
+            this.button7.TabIndex = 8;
+            this.button7.Text = "打标机R";
+            this.button7.UseVisualStyleBackColor = true;
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(317, 794);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(145, 33);
+            this.button8.TabIndex = 9;
+            this.button8.Text = "MES";
+            this.button8.UseVisualStyleBackColor = true;
+            // 
             // Form6
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1308, 794);
+            this.ClientSize = new System.Drawing.Size(1308, 829);
+            this.Controls.Add(this.button8);
+            this.Controls.Add(this.button7);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.groupBox4);
@@ -390,5 +423,8 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
     }
 }

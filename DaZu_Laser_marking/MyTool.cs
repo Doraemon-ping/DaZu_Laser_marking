@@ -100,7 +100,7 @@ namespace DaZu_Laser_marking
             int days = (now.Date - dt.Date).Days+1;
             string s3 = year + days.ToString();
             string s4 = "V88896S1";
-            string s5 = "MZK08";
+            string s5 = "MZK07";
             string s6 = number.ToString("00000");
             return (s1 + TH + s2 + s3 + s4 + s5 + s6).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
 

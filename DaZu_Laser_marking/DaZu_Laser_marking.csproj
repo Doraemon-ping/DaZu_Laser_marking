@@ -133,6 +133,8 @@
       <DependentUpon>Form7.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\AddEquipInfo.cs" />
+    <Compile Include="Model\getEqupments.cs" />
+    <Compile Include="Model\KZequpment.cs" />
     <Compile Include="Model\parms.cs" />
     <Compile Include="Net\MyNet.cs" />
     <Compile Include="SQLite\dataSql.cs" />

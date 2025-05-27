@@ -52,7 +52,7 @@ namespace DaZu_Laser_marking.SQLite
                         // 添加参数并赋值
                         command.Parameters.AddWithValue("@zzm", ZZM);
                         command.Parameters.AddWithValue("@khm", KHM);
-                        command.Parameters.AddWithValue("@dt", DT.ToString());
+                        command.Parameters.AddWithValue("@dt", DT.ToString("yyyy-MM-dd HH:mm:ss"));
 
                         // 执行插入操作
                         int rowsAffected = command.ExecuteNonQuery();
@@ -186,6 +186,7 @@ namespace DaZu_Laser_marking.SQLite
             DateTime todayStart = DateTime.Today;
             string today = todayStart.ToString("yyyy-MM-dd HH:mm:ss");
             int id = 0;
+            System.Console.WriteLine(today);
 
             try
             {
@@ -262,6 +263,84 @@ namespace DaZu_Laser_marking.SQLite
 
         }
 
-        
+        public bool updateUp(string barcode , int isUopLoad) {
+            Console.WriteLine("开始保存！");
+            try
+            {
+                using (var connection = new SQLiteConnection(connectionString))
+                {
+                    connection.Open(); // 打开数据库连接
+
+                    // 插入数据的 SQL 语句
+                    string insertQuery = "UPDATE \"生产数据\"\r\nSET IS_UPLOAD=@up WHERE BARCODE=@code";
+
+                    // 创建 SQL 命令
+                    using (var command = new SQLiteCommand(insertQuery, connection))
+                    {
+                        // 添加参数并赋值
+                        command.Parameters.AddWithValue("@up", isUopLoad);
+                        command.Parameters.AddWithValue("@code", barcode);
+                        // command.Parameters.AddWithValue("@dt", DT.ToString());
+
+                        // 执行插入操作
+                        int rowsAffected = command.ExecuteNonQuery();
+                        Console.WriteLine($"成功插入了 {rowsAffected} 行数据。");
+                    }
+                }
+                Console.WriteLine("保存成功！");
+                return true;
+
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.WriteLine("失败！");
+                return false;
+
+            }
+
+
+
+        }
+
+
+        public bool isUpLoad(string barcode) {
+
+            bool up = false;
+            try
+            {
+
+                using (var connection = new SQLiteConnection(connectionString))
+                {
+                    string selectQuery = "SELECT IS_UPLOAD FROM \"生产数据\" WHERE BARCODE=@code";
+                    connection.Open();
+
+                    using (var command = new SQLiteCommand(selectQuery, connection))
+                    {
+                        // 添加查询参数
+                        command.Parameters.AddWithValue("@code",barcode);
+
+                        using (var reader = command.ExecuteReader())
+                        {
+
+                            reader.Read();
+                            bool res = reader.Read(); // ✅ 只有在 Read() 返回 true 时才能访问数据
+                            up = res;
+
+
+                        }
+
+
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("查询失败！" + e.Message);
+
+            }
+            return up;
+
+        }
     }
 }
