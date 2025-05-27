@@ -50,7 +50,6 @@ namespace DaZu_Laser_marking
 
          
 
-            System.Console.WriteLine(S);
 
             
         }

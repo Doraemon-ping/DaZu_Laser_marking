@@ -45,13 +45,21 @@ namespace DaZu_Laser_marking
         public DaBiao(int id, string name)
         {
 
-            MySqlite msl = new MySqlite();
-            List<object> result = msl.getByIdName(id, name);
-            IP1 = result[0].ToString();
-            PORT1 = result[1].ToString();
-            Console.WriteLine(IP + ":" + PORT);
-            tcpClient = new TcpClient(IP1,int.Parse(PORT1));
-            stream = tcpClient.GetStream();
+            try
+            {
+                MySqlite msl = new MySqlite();
+                List<object> result = msl.getByIdName(id, name);
+                IP1 = result[0].ToString();
+                PORT1 = result[1].ToString();
+                Console.WriteLine(IP + ":" + PORT);
+                tcpClient = new TcpClient(IP1, int.Parse(PORT1));
+                stream = tcpClient.GetStream();
+
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex.ToString());
+            
+            }
 
           
 

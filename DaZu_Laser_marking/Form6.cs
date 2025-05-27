@@ -527,6 +527,19 @@ namespace DaZu_Laser_marking
 
                     }
 
+                    if (b_bt1 == 2)//R
+                    {
+
+
+
+
+
+
+
+
+
+                    }
+
 
 
 
@@ -579,15 +592,12 @@ namespace DaZu_Laser_marking
             if (ms == 1) { 
                 ms = 2;
                 return;
-            
             }
                 
-            if (ms == 2) { ms = 1;
-
+            if (ms == 2) { 
+                ms = 1;
                 return;
-               
             }
-
         }
     }
 }
