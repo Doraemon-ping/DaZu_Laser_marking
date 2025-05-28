@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DaZu_Laser_marking.Model;
 using Newtonsoft.Json;
+using NLog;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace DaZu_Laser_marking
@@ -30,15 +31,32 @@ namespace DaZu_Laser_marking
 
         private async Task SendMessageAsync(string message)
         {
-            byte[] buffer = Encoding.UTF8.GetBytes(message);
-            await stream.WriteAsync(buffer, 0, buffer.Length);
+            try
+            {
+                byte[] buffer = Encoding.UTF8.GetBytes(message);
+                await stream.WriteAsync(buffer, 0, buffer.Length);
+            }
+            catch(Exception ex)
+            { 
+                Program.Logger.Info(ex.Message);
+            }
         }
 
         private async Task<string> ReceiveMessageAsync()
         {
-            byte[] buffer = new byte[1024];
-            int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-            return Encoding.UTF8.GetString(buffer, 0, bytesRead);
+            try
+            {
+                byte[] buffer = new byte[1024];
+                int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                return Encoding.UTF8.GetString(buffer, 0, bytesRead);
+
+            }
+            catch (Exception ex)
+            {
+                Program.Logger.Info(ex.Message);
+                return null;
+            }
+           
         }
 
 
@@ -57,7 +75,7 @@ namespace DaZu_Laser_marking
 
             }
             catch (Exception ex) {
-                Console.WriteLine(ex.ToString());
+                Program.Logger.Info(ex.Message);
             
             }
 
@@ -78,8 +96,13 @@ namespace DaZu_Laser_marking
                 };
                 var requestJson = JsonConvert.SerializeObject(requestData) + "#";
 
+                Program.Logger.Info("登录请求：" + requestJson);
+
                 await SendMessageAsync(requestJson);
-                return await ReceiveMessageAsync();
+                
+                string result = await ReceiveMessageAsync();
+                Program.Logger.Info("登录反馈：" + result);
+                return result;
             }
             finally
             {
@@ -99,9 +122,11 @@ namespace DaZu_Laser_marking
                     F = "GetAllDevices_C2S"
                 };
                 var requestJson = JsonConvert.SerializeObject(requestData) + "#";
-
+                Program.Logger.Info("获取设备："+requestJson);
                 await SendMessageAsync(requestJson);
-                return await ReceiveMessageAsync();
+                string result = await ReceiveMessageAsync();
+                Program.Logger.Info("反馈：" + result);
+                return result;
             }
             finally
             {
@@ -173,6 +198,7 @@ namespace DaZu_Laser_marking
                 };
                 var requestJson = JsonConvert.SerializeObject(requestData) + "#";
                 await SendMessageAsync(requestJson);
+                Program.Logger.Info("开始打标：" + requestJson);
                 return await ReceiveMessageAsync();
             }
             finally
@@ -246,6 +272,7 @@ namespace DaZu_Laser_marking
                 };
                 var requestJson = JsonConvert.SerializeObject(requestData) + "#";
                 await SendMessageAsync(requestJson);
+                Program.Logger.Info("替换文本：" + requestJson);
                 return await ReceiveMessageAsync();
             }
             finally

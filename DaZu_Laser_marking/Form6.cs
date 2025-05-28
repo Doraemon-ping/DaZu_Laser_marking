@@ -48,9 +48,17 @@ namespace DaZu_Laser_marking
         string Port_L;
         string Port_R;
         string Port_mes;
-        DaBiao LD;
-        DaBiao RD;
+        DaBiao LD;//左打标机
+        DaBiao RD;//右打标机
+
+        List<string> Lequpment;
+        List<string> Requpment;
+
+        private readonly String APIadd = "/api/AddEquipInfo";
+        string url;
         Thread CheekIP;
+
+        int postStutas;//报工状态
         
 
         public Form6()
@@ -59,44 +67,64 @@ namespace DaZu_Laser_marking
             chushihau();
         }
 
-        public void chushihau() {
-            getPF();
-            //控件更新线程
-            fresh = new Thread(flash);
-            fresh.Start();
+        public async void chushihau() {
 
-            //初始化报工实体实体
-            getAdMod();
+            try
+            {
+                getPF();
+                //控件更新线程
+                fresh = new Thread(flash);
+                fresh.Start();
 
-            dsq = new dataSql();
+                //初始化报工实体实体
+                getAdMod();
 
-            MySqlite mySqlite = new MySqlite();
-            List<object> res1 = new List<object>();
-            res1 = mySqlite.getByIdName(1, "打标机1");
-            IP_L = res1[0].ToString();
-            Port_L = res1[1].ToString();
+                dsq = new dataSql();
 
-            List<object> res2 = new List<object>();
-            res2 = mySqlite.getByIdName(2, "打标机2");
-            IP_R = res2[0].ToString();
-            Port_R = res2[1].ToString();
+                MySqlite mySqlite = new MySqlite();
+                List<object> res1 = new List<object>();
+                res1 = mySqlite.getByIdName(1, "打标机1");
+                IP_L = res1[0].ToString();
+                Port_L = res1[1].ToString();
 
-            List<object> res3 = new List<object>();
-            res3 = mySqlite.getByIdName(3, "数据库");
+                List<object> res2 = new List<object>();
+                res2 = mySqlite.getByIdName(2, "打标机2");
+                IP_R = res2[0].ToString();
+                Port_R = res2[1].ToString();
 
-            List<object> res4 = new List<object>();
-            res4 = mySqlite.getByIdName(4, "WEB");
-           IP_mes = res4[0].ToString();
-            Port_mes = res4[1].ToString();
+                List<object> res3 = new List<object>();
+                res3 = mySqlite.getByIdName(3, "数据库");
 
-            //检查是否连接
-            CheekIP = new Thread(cheek);
-            CheekIP.Start();
+                List<object> res4 = new List<object>();
+                res4 = mySqlite.getByIdName(4, "WEB");
+                IP_mes = res4[0].ToString();
+                Port_mes = res4[1].ToString();
+
+                url = "http://" + IP_mes + Port_mes;
+
+                //检查是否连接
+                CheekIP = new Thread(cheek);
+                CheekIP.Start();
 
 
-            LD = new DaBiao(1, "打标机1");
+                LD = new DaBiao(1, "打标机1");
+                RD = new DaBiao(2, "打标机2");
 
+                string resL = await LD.GetAllEqupments();
+                string resR = await RD.GetAllEqupments();
+                resL.Replace("#", "");
+                resR.Replace("#", "");
+                getEqupments result1 = System.Text.Json.JsonSerializer.Deserialize<getEqupments>(resL);
+                getEqupments result2 = System.Text.Json.JsonSerializer.Deserialize<getEqupments>(resR);
 
+                //获取左右打码设备号
+
+                Lequpment = result1.Devices;
+                Requpment = result2.Devices;
+            }
+            catch (Exception ex) { 
+                System.Console.WriteLine(ex.Message);
+            }
         }
 
 
@@ -132,8 +160,6 @@ namespace DaZu_Laser_marking
             {
                 isOK = false;
             }
-
-
         }
 
 
@@ -356,13 +382,11 @@ namespace DaZu_Laser_marking
             isOK = false;
             richTextBox2.BackColor = Color.White;
             richTextBox5.BackColor = Color.White;
-
             mesMod.barCode = null;
             mesMod.mainPartCode = null;
             mesMod.childPartCode = null;
             mesMod.startTime = DateTime.Now;
             mesMod.endTime = DateTime.Now;
-
 
         }
 
@@ -444,12 +468,9 @@ namespace DaZu_Laser_marking
                         b_bt2 = 1;
                         isNotCm = MyTool.isNotCm(code);
                         if (!isNotCm) { 
-                           
                             richTextBox4.Text = "铸造重码";
                             richTextBox5.Text = dsq.getKHM(code);
                             richTextBox5.BackColor = Color.Yellow;
-
-
                         }
                     }
                     // ScanRead = richTextBox1.Text.IsNotNullOrEmpty();
@@ -476,15 +497,11 @@ namespace DaZu_Laser_marking
                 {
                     okBarcode = richTextBox1.Text;
                     okHbarcode = richTextBox2.Text;
-
-
                 }
                 if (b_bt1 == 2)
                 {
                     okBarcode = richTextBox6.Text;
                     okHbarcode = richTextBox5.Text;
-                    
-
                 }
 
             }

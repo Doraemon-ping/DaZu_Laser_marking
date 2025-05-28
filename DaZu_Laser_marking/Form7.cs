@@ -1,4 +1,5 @@
 ﻿using DaZu_Laser_marking.Model;
+using DaZu_Laser_marking.NET;
 using DaZu_Laser_marking.SQLite;
 using System;
 using System.Collections.Generic;
@@ -7,10 +8,15 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Portable.Licensing;
+using Portable.Licensing.Security.Cryptography;
+using System.IO;
+using License = Portable.Licensing.License;
 
 
 namespace DaZu_Laser_marking
@@ -25,33 +31,34 @@ namespace DaZu_Laser_marking
         private async void button1_Click(object sender, EventArgs e)
         {
 
-            DaBiao equpment1 = new DaBiao(1,"打标机1");
+            DaBiao daBiao = new DaBiao(1, "打标机1");
+            await daBiao.Login();
 
-            // Console.WriteLine("登录："+ equpment1.Login());
 
-             string s1 = await equpment1.Login();
-             System.Console.WriteLine(s1);
-
-            string res = await equpment1.GetAllEqupments();
-            res.Replace("#", "");
-            getEqupments result = JsonSerializer.Deserialize<getEqupments>(res);
-
-            richTextBox1.Text = result.Devices[0];
         }
 
         private async void button2_Click(object sender, EventArgs e)
         {
-            DaBiao d = new DaBiao(1, "打标机1");
-            string T = textBox1.Text;
+            AddEquipInfo mesMod = new AddEquipInfo();
+            mesMod = new Model.AddEquipInfo();
+            mesMod.FactoryCode = "8111";
+            mesMod.ProductLineNo = "KHM01";
+            mesMod.EquipNo = "8111khm02";
+            mesMod.stationCodeNo = "KHMGW01";
+            mesMod.Operator = "tp2022062112";
+            mesMod.Result = "OK";
+            mesMod.barCode = "111";
+            mesMod.mainPartCode = "111";
 
-           string S2 =  await d.Login();
-
-            System.Console.WriteLine(S2);
-
-         
+            string URL = "http://10.25.206.7:8861/api/AddEquipInfo";
+            string JSON = System.Text.Json.JsonSerializer.Serialize(mesMod);
+            var response = await MyNet.myPost(URL,JSON);
 
 
-            
+            richTextBox1.Text = response;
+
+
+
         }
     }
 }
