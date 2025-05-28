@@ -28,7 +28,6 @@ namespace DaZu_Laser_marking
     public partial class Form6 : Form
     {
         bool _isHandlingTextChanged = false;
-
         int b_bt1 = 0;//button1状态
         int b_bk = 0;//标刻状态9
         int b_bt2 = 0;//客户吗状态
@@ -50,17 +49,13 @@ namespace DaZu_Laser_marking
         string Port_mes;
         DaBiao LD;//左打标机
         DaBiao RD;//右打标机
-
         List<string> Lequpment;
         List<string> Requpment;
-
         private readonly String APIadd = "/api/AddEquipInfo";
         string url;
         Thread CheekIP;
-
-        int postStutas;//报工状态
+        int postStutas = 0;//报工状态 0：等待 1：进行中 2：成功 3：失败
         
-
         public Form6()
         {
             InitializeComponent();
@@ -127,17 +122,21 @@ namespace DaZu_Laser_marking
             }
         }
 
-
         public void getPF() {
 
-            PeiFangSql peiFangSql = new PeiFangSql();
-            List<object> QZ = peiFangSql.getById(1);
+            try
+            {
+                PeiFangSql peiFangSql = new PeiFangSql();
+                List<object> QZ = peiFangSql.getById(1);
 
-            //右件配方实体
-            QZcode = new Peifang(QZ[1].ToString(), QZ[2].ToString(), int.Parse(QZ[3].ToString()));
-
-            // System.Console.WriteLine("test:"+LMOD.TH_R);
-
+                //右件配方实体
+                QZcode = new Peifang(QZ[1].ToString(), QZ[2].ToString(), int.Parse(QZ[3].ToString()));
+                // System.Console.WriteLine("test:"+LMOD.TH_R);
+            }
+            catch (Exception ex)
+            {
+                Program.Logger.Info(ex.Message);
+            }
         }
 
         public void getAdMod() { 
@@ -148,7 +147,6 @@ namespace DaZu_Laser_marking
             mesMod.stationCodeNo = "KHMGW01";
             mesMod.Operator = "tp2022062112";
             mesMod.Result = "OK";
-        
         }
 
         public void update() {
@@ -161,11 +159,6 @@ namespace DaZu_Laser_marking
                 isOK = false;
             }
         }
-
-
-       
-
-
 
         public void flash() {
             
@@ -387,15 +380,12 @@ namespace DaZu_Laser_marking
             mesMod.childPartCode = null;
             mesMod.startTime = DateTime.Now;
             mesMod.endTime = DateTime.Now;
-
         }
-
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             // 检查是否已经在处理 TextChanged 事件
             if (_isHandlingTextChanged)
                 return;
-
             try
             {
                 Console.WriteLine("事件触发！");
@@ -414,11 +404,8 @@ namespace DaZu_Laser_marking
 
                 //修改值
                 bool isinput = !string.IsNullOrEmpty(textBox1.Text);//不为空，用户输入
-                                                                //;//用户是否完成输入
                 isinput = isinput && !(textBox1.Text == "\n" || textBox1.Text == "\r\n" || textBox1.Text == "\r");
-
                 bool inputExit = false;//默认未完成
-
                 bool endN = false; //以回车结尾
                 bool includeN = false; //包含回车
 
@@ -444,8 +431,6 @@ namespace DaZu_Laser_marking
 
                      code = code.ToUpper(); // 示例：将文本转换为大写
                                             // richTextBox1.SelectionStart = richTextBox1.Text.Length; // 保持光标位置
-                   
-
                     int lr = MyTool.isLorR(code);
                     b_bt1 = lr;
                     if (lr == 1) { richTextBox1.Text = code;
@@ -477,8 +462,6 @@ namespace DaZu_Laser_marking
                     textBox1.Text = string.Empty;
                     update();
                 }
-
-                ///
             }
             finally
             {
@@ -503,12 +486,10 @@ namespace DaZu_Laser_marking
                     okBarcode = richTextBox6.Text;
                     okHbarcode = richTextBox5.Text;
                 }
-
             }
             else {
                 MessageBox.Show("二维码错误！");
                 return;
-            
             }
 
             //二维码正确
@@ -520,46 +501,58 @@ namespace DaZu_Laser_marking
                    // MessageBox.Show("正常模式正常生产！");
                     dsq.insert(okBarcode, okHbarcode, DateTime.Now);
                     //上传
-
                     mesMod.barCode= okBarcode;
                     mesMod.mainPartCode = okBarcode;
                     mesMod.childPartCode = okHbarcode;
                     mesMod.startTime = DateTime.Now;
                     mesMod.endTime = DateTime.Now;
-
                     string json = System.Text.Json.JsonSerializer.Serialize(mesMod);
-                    MessageBox.Show(json);
+                    try
+                    {
+                        var response = await MyNet.myPost(url, json);
+                        richTextBox6.Text = response;
+                        serverResponse serverresponse = JsonConvert.DeserializeObject<serverResponse>(response);
+                        int code = serverresponse.Code;
+                        if (code == 201)
+                        {
+                            Program.Logger.Error("失败！错误信息：" + response);
+                            postStutas = 3;
+                            // chushihua();
+                        }
+                        else if (code == 0)
+                        {
 
-
+                            postStutas = 2;
+                            //chushihua();
+                            Program.Logger.Info("保存成功！" + response);
+                        }
+                 
+                    }
+                    catch (Exception ex)
+                    {
+                        richTextBox2.Text = ($"An error occurred: {ex.Message}");
+                        postStutas = 3;
+                    }
+                    //MessageBox.Show(json);
                     if (b_bt1 == 1)//L
                     {
-                        
-
-
-
-
-
-
-
-
+                        richTextBox3.Text = "左件开始打标";
+                        Program.Logger.Info("正常模式，铸造码："+mesMod.barCode+"客户码："+mesMod.childPartCode);
+                        await LD.Login();
+                        await LD.upDateText(1,"","");//替换天数
+                        await LD.upDateText(1, "", "");//替换序列号
+                        await LD.StartMarking(Lequpment);
                     }
 
                     if (b_bt1 == 2)//R
                     {
-
-
-
-
-
-
-
-
-
+                        richTextBox3.Text = "右件开始打标";
+                        Program.Logger.Info("正常模式，铸造码：" + mesMod.barCode + "客户码：" + mesMod.childPartCode);
+                        await RD.Login();
+                        await RD.upDateText(1, "", "");//替换天数
+                        await RD.upDateText(1, "", "");//替换序列号
+                        await RD.StartMarking(Lequpment);
                     }
-
-
-
-
                     //打标
 
                     clean();
@@ -568,8 +561,6 @@ namespace DaZu_Laser_marking
                 else {
                     MessageBox.Show("请选择返工模式！");
                     return;
-
-
                 }
             }
 
@@ -581,29 +572,40 @@ namespace DaZu_Laser_marking
                     MessageBox.Show("返工模式正常生产！");
 
                     //上传
+                    //重码不上传
 
+                    //打标
+                    if (b_bt1 == 1)//L
+                    {
+                        richTextBox3.Text = "左件开始打标";
+                        Program.Logger.Info("正常模式，铸造码：" + mesMod.barCode + "客户码：" + mesMod.childPartCode);
+                        await LD.Login();
+                        await LD.upDateText(1, "", "");//替换天数
+                        await LD.upDateText(1, "", "");//替换序列号
+                        await LD.StartMarking(Lequpment);
+                    }
 
+                    if (b_bt1 == 2)//R
+                    {
+                        richTextBox3.Text = "右件开始打标";
+                        Program.Logger.Info("正常模式，铸造码：" + mesMod.barCode + "客户码：" + mesMod.childPartCode);
+                        await RD.Login();
+                        await RD.upDateText(1, "", "");//替换天数
+                        await RD.upDateText(1, "", "");//替换序列号
+                        await RD.StartMarking(Lequpment);
+                    }
                     //打标
                     clean();
                     return;
-
                 }
                 else
                 {
                     //不重码
                     MessageBox.Show("请选择正常模式！");
                     return;
-
-
                 }
-
-
             }
-
-
-
         }
-
         private void button4_Click(object sender, EventArgs e)
         {
             if (ms == 1) { 

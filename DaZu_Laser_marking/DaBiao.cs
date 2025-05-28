@@ -273,7 +273,10 @@ namespace DaZu_Laser_marking
                 var requestJson = JsonConvert.SerializeObject(requestData) + "#";
                 await SendMessageAsync(requestJson);
                 Program.Logger.Info("替换文本：" + requestJson);
-                return await ReceiveMessageAsync();
+                var result =  await ReceiveMessageAsync();
+                Program.Logger.Info("替换反馈：" + result);
+                return result;
+
             }
             finally
             {
