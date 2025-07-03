@@ -17,6 +17,7 @@ using Portable.Licensing;
 using Portable.Licensing.Security.Cryptography;
 using System.IO;
 using License = Portable.Licensing.License;
+using Newtonsoft.Json;
 
 
 namespace DaZu_Laser_marking
@@ -33,6 +34,13 @@ namespace DaZu_Laser_marking
 
             DaBiao daBiao = new DaBiao(1, "打标机1");
             await daBiao.Login();
+
+            string str = "[>16P0291872VAJD25136V88896S1MZK08N00043";
+
+            string s1 = str.Substring(16, 5);
+            string s2 = str.Substring(35, 5);
+            richTextBox1.Text = "年月日：" + s1 + "\n序列号：" + s2;
+
 
 
         }
@@ -53,9 +61,10 @@ namespace DaZu_Laser_marking
             string URL = "http://10.25.206.7:8861/api/AddEquipInfo";
             string JSON = System.Text.Json.JsonSerializer.Serialize(mesMod);
             var response = await MyNet.myPost(URL,JSON);
+            serverResponse serverresponse = JsonConvert.DeserializeObject<serverResponse>(response);
+           
 
-
-            richTextBox1.Text = response;
+            richTextBox1.Text = response+"\ncode:"+ serverresponse.Code;
 
 
 

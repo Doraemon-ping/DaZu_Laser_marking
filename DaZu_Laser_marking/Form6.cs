@@ -521,7 +521,6 @@ namespace DaZu_Laser_marking
                         }
                         else if (code == 0)
                         {
-
                             postStutas = 2;
                             //chushihua();
                             Program.Logger.Info("保存成功！" + response);
@@ -539,8 +538,11 @@ namespace DaZu_Laser_marking
                         richTextBox3.Text = "左件开始打标";
                         Program.Logger.Info("正常模式，铸造码："+mesMod.barCode+"客户码："+mesMod.childPartCode);
                         await LD.Login();
-                        await LD.upDateText(1,"","");//替换天数
-                        await LD.upDateText(1, "", "");//替换序列号
+                        string ymd = mesMod.childPartCode.Substring(16, 5);
+                        string xlh = mesMod.childPartCode.Substring(35, 5);
+
+                        await LD.upDateText(1,ymd,"");//替换天数
+                        await LD.upDateText(1, xlh, "");//替换序列号
                         await LD.StartMarking(Lequpment);
                     }
 
@@ -549,8 +551,11 @@ namespace DaZu_Laser_marking
                         richTextBox3.Text = "右件开始打标";
                         Program.Logger.Info("正常模式，铸造码：" + mesMod.barCode + "客户码：" + mesMod.childPartCode);
                         await RD.Login();
-                        await RD.upDateText(1, "", "");//替换天数
-                        await RD.upDateText(1, "", "");//替换序列号
+                        string ymd = mesMod.childPartCode.Substring(16, 5);
+                        string xlh = mesMod.childPartCode.Substring(35, 5);
+
+                        await RD.upDateText(1, ymd, "");//替换天数
+                        await RD.upDateText(1, xlh, "");//替换序列号
                         await RD.StartMarking(Lequpment);
                     }
                     //打标
@@ -580,8 +585,10 @@ namespace DaZu_Laser_marking
                         richTextBox3.Text = "左件开始打标";
                         Program.Logger.Info("正常模式，铸造码：" + mesMod.barCode + "客户码：" + mesMod.childPartCode);
                         await LD.Login();
-                        await LD.upDateText(1, "", "");//替换天数
-                        await LD.upDateText(1, "", "");//替换序列号
+                        string ymd = okHbarcode.Substring(16, 5);
+                        string xlh = okHbarcode.Substring(35, 5);
+                        await LD.upDateText(1, ymd, "");//替换天数
+                        await LD.upDateText(1, xlh, "");//替换序列号
                         await LD.StartMarking(Lequpment);
                     }
 
@@ -590,8 +597,10 @@ namespace DaZu_Laser_marking
                         richTextBox3.Text = "右件开始打标";
                         Program.Logger.Info("正常模式，铸造码：" + mesMod.barCode + "客户码：" + mesMod.childPartCode);
                         await RD.Login();
-                        await RD.upDateText(1, "", "");//替换天数
-                        await RD.upDateText(1, "", "");//替换序列号
+                        string ymd = okHbarcode.Substring(16, 5);
+                        string xlh = okHbarcode.Substring(35, 5);
+                        await RD.upDateText(1, ymd, "");//替换天数
+                        await RD.upDateText(1, xlh, "");//替换序列号
                         await RD.StartMarking(Lequpment);
                     }
                     //打标
