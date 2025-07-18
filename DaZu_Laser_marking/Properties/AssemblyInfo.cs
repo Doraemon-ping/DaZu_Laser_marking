@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("DaZu_Laser_marking")]
+[assembly: AssemblyTitle("客户码打标")]
 [assembly: AssemblyDescription("大族激光打标机-客户码转换")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("TPC")]

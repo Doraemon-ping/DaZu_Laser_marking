@@ -54,7 +54,7 @@ namespace DaZu_Laser_marking
             catch (Exception ex)
             {
                 Program.Logger.Info(ex.Message);
-                return null;
+                return ex.Message;
             }
            
         }
@@ -104,6 +104,11 @@ namespace DaZu_Laser_marking
                 Program.Logger.Info("登录反馈：" + result);
                 return result;
             }
+            catch (Exception ex)
+            {
+                Program.Logger.Error(ex);
+                return ex.Message;
+            }
             finally
             {
                 semaphore.Release();
@@ -127,6 +132,11 @@ namespace DaZu_Laser_marking
                 string result = await ReceiveMessageAsync();
                 Program.Logger.Info("反馈：" + result);
                 return result;
+            }
+            catch (Exception ex)
+            {
+                Program.Logger.Error(ex);
+                return ex.Message;
             }
             finally
             {
@@ -152,12 +162,16 @@ namespace DaZu_Laser_marking
                 await SendMessageAsync(requestJson);
                 return await ReceiveMessageAsync();
             }
+            catch (Exception ex)
+            {
+                Program.Logger.Error(ex);
+                return ex.Message;
+            }
             finally
             {
                 semaphore.Release();
             }
         }
-
         //打开文件
         public async Task<string> OpenFileDialog(string path)
         {
@@ -175,14 +189,16 @@ namespace DaZu_Laser_marking
                 await SendMessageAsync(requestJson);
                 return await ReceiveMessageAsync();
             }
+            catch (Exception ex)
+            {
+                Program.Logger.Error(ex);
+                return ex.Message;
+            }
             finally
             {
                 semaphore.Release();
             }
-
         }
-
-
         //开始标刻
         public async Task<string> StartMarking(List<string> EQ)
         {
@@ -201,13 +217,16 @@ namespace DaZu_Laser_marking
                 Program.Logger.Info("开始打标：" + requestJson);
                 return await ReceiveMessageAsync();
             }
+            catch (Exception ex)
+            {
+                Program.Logger.Error(ex);
+                return ex.Message;
+            }
             finally
             {
                 semaphore.Release();
             }
         }
-
-
         public async Task<string> StartMarkingByWord(string words, List<string> equpment)
         {
             // 保证发送+接收的原子性
@@ -225,12 +244,16 @@ namespace DaZu_Laser_marking
                 await SendMessageAsync(requestJson);
                 return await ReceiveMessageAsync();
             }
+            catch (Exception ex)
+            {
+                Program.Logger.Error(ex);
+                return ex.Message;
+            }
             finally
             {
                 semaphore.Release();
             }
         }
-
         public async Task<string> getTextValue(string TEXT)
         {
             // 保证发送+接收的原子性
@@ -248,13 +271,16 @@ namespace DaZu_Laser_marking
                 await SendMessageAsync(requestJson);
                 return await ReceiveMessageAsync();
             }
+            catch (Exception ex)
+            {
+                Program.Logger.Error(ex);
+                return ex.Message;
+            }
             finally
             {
                 semaphore.Release();
             }
-           
         }
-
 
         public async Task<string> upDateText(int p,string t,string docName)
         {
@@ -278,15 +304,16 @@ namespace DaZu_Laser_marking
                 return result;
 
             }
+            catch (Exception ex)
+            {
+                Program.Logger.Error(ex);
+                return ex.Message;
+            }
             finally
             {
                 semaphore.Release();
             }
-
         }
-
-
-
     }
 }
 

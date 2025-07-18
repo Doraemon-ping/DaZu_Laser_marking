@@ -18,6 +18,7 @@ using Portable.Licensing.Security.Cryptography;
 using System.IO;
 using License = Portable.Licensing.License;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 
 namespace DaZu_Laser_marking
@@ -32,14 +33,21 @@ namespace DaZu_Laser_marking
         private async void button1_Click(object sender, EventArgs e)
         {
 
-            DaBiao daBiao = new DaBiao(1, "打标机1");
-            await daBiao.Login();
+            DaBiao LD = new DaBiao(1, "打标机1");
 
-            string str = "[>16P0291872VAJD25136V88896S1MZK08N00043";
+            LD = new DaBiao(1, "打标机1");
+            await LD.Login();
+            string resL = await LD.GetAllEqupments();
+            resL = resL.Replace("#", "");
+            getEqupments result1 = System.Text.Json.JsonSerializer.Deserialize<getEqupments>(resL);
 
-            string s1 = str.Substring(16, 5);
-            string s2 = str.Substring(35, 5);
-            richTextBox1.Text = "年月日：" + s1 + "\n序列号：" + s2;
+            //获取左右打码设备号
+
+            List<string> Lequpment = result1.Devices;
+
+            richTextBox1.Text = Lequpment[0];
+
+
 
 
 

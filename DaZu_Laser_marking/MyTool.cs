@@ -45,11 +45,11 @@ namespace DaZu_Laser_marking
         public static int isLorR(string code)
         {
 
-            int number = 24;
+            int number = 25;
 
-            string LH = "LH";
-            string RH = "RH";
-            string BZ = "FK";
+            string LH = "20073669";
+            string RH = "20073672";
+            string BZ = "T";
 
             int codeLenght = code.Length;
             string code1;
@@ -63,12 +63,10 @@ namespace DaZu_Laser_marking
             }
             else
             {
-                code1 = code.Substring(3, 2);
-                code2 = code.Substring(5, 2);
+                //从0开始截取位数，长度
+                code1 = code.Substring(0, 1);
+                code2 = code.Substring(1, 8);
             }//位数不对，直接返回
-
-            code1 = code.Substring(3, 2);
-            code2 = code.Substring(5, 2);
 
             bool isBz = BZ.Equals(code1);
             bool isBz1 = LH.Equals(code2);
@@ -93,16 +91,20 @@ namespace DaZu_Laser_marking
 
         DateTime now = DateTime.Now;
             string TH = L.TH_L;
-            string s1 = "[>";
-            string s2 = "VAI";
-            string year = now.Year.ToString();
-            DateTime dt = new DateTime(now.Year, 1, 1);
-            int days = (now.Date - dt.Date).Days+1;
-            string s3 = year + days.ToString();
-            string s4 = "V88896S1";
-            string s5 = "MZK07";
-            string s6 = number.ToString("00000");
-            return (s1 + TH + s2 + s3 + s4 + s5 + s6).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+            string s1 = "/";
+            string s2 = "2CZ";
+            string year = now.Year.ToString().Substring(2, 2);
+            string month = now.Month.ToString().Trim();
+            int m = int.Parse(month);
+            if (m == 10) { month = "A"; }
+            if (m == 11) { month = "B"; }
+            if (m == 12) { month = "C"; }
+            String day = now.Day.ToString("00");
+
+            string s4 = year + month + day + number.ToString("00000"); 
+
+            string s5 = "M05";
+            return (TH + s1 + s2 + s1 + s4 +s1+ s5 ).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
 
 
 
@@ -112,19 +114,23 @@ namespace DaZu_Laser_marking
         {
             dataSql dataSql = new dataSql();
             int number = dataSql.getNumner() + 1;
+
             DateTime now = DateTime.Now;
             string TH = R.TH_R;
-            string s1 = "[>";
-            string s2 = "VAI";
-            string year = now.Year.ToString();
-            DateTime dt = new DateTime(now.Year, 1, 1);
-            int days = (now.Date - dt.Date).Days + 1;
-            string s3 = year + days.ToString();
-            string s4 = "V88896S1";
-            string s5 = "MZK08";
-            string s6 = number.ToString("00000");
-            return (s1 + TH + s2 + s3 + s4 + s5 + s6).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+            string s1 = "/";
+            string s2 = "2CZ";
+            string year = now.Year.ToString().Substring(2, 2);
+            string month = now.Month.ToString().Trim();
+            int m = int.Parse(month);
+            if (m == 10) { month = "A"; }
+            if (m == 11) { month = "B"; }
+            if (m == 12) { month = "C"; }
+            String day = now.Day.ToString("00");
 
+            string s4 = year + month + day + number.ToString("00000");
+
+            string s5 = "M05";
+            return (TH + s1 + s2 + s1 + s4 +s1+ s5).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
 
 
         }
