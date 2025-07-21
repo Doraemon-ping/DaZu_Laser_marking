@@ -17,6 +17,7 @@ namespace DaZu_Laser_marking
         Form4 form4;
         Form7 form7;
         Form1 form1;
+        mainform mainform;
         public Form2()
         {
             InitializeComponent();
@@ -24,9 +25,9 @@ namespace DaZu_Laser_marking
 
         private void 主页ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (form6 == null || form6.IsDisposed)
-                form6 = new Form6();
-            MyTool.showForm(form6, this.panel1);
+            if (mainform == null || mainform.IsDisposed)
+                mainform = new mainform();
+            MyTool.showForm(mainform, this.panel1);
         }
 
         private void 打标机配置ToolStripMenuItem_Click(object sender, EventArgs e)
