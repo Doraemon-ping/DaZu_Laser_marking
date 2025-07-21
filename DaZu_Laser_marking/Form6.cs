@@ -391,8 +391,8 @@ namespace DaZu_Laser_marking
             richTextBox5.Text = string.Empty;
             b_bt1 = 0;
             b_bt2 = 0;
-           // richTextBox3.Text = "";
-            //richTextBox4.Text = "";
+            richTextBox3.Text = "";
+            richTextBox4.Text = "";
             isNotCm = false;
             isOK = false;
             richTextBox2.BackColor = Color.White;
@@ -619,7 +619,7 @@ namespace DaZu_Laser_marking
                     }
                     //打标
 
-                    clean();
+                   // clean();
                     return;
                 }
                 else {
@@ -698,7 +698,7 @@ namespace DaZu_Laser_marking
                         }
                     }
                     //打标
-                    clean();
+                    //clean();
                     return;
                 }
                 else
