@@ -2,6 +2,7 @@
 using DaZu_Laser_marking.SQLite;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -86,51 +87,15 @@ namespace DaZu_Laser_marking
 
         public static string createKHM_L(Peifang L) {
 
-            dataSql dataSql = new dataSql();
-            int number = dataSql.getNumner()+1;
-
-        DateTime now = DateTime.Now;
-            string TH = L.TH_L;
-            string s1 = "/";
-            string s2 = "2CZ";
-            string year = now.Year.ToString().Substring(2, 2);
-            string month = now.Month.ToString().Trim();
-            int m = int.Parse(month);
-            if (m == 10) { month = "A"; }
-            if (m == 11) { month = "B"; }
-            if (m == 12) { month = "C"; }
-            String day = now.Day.ToString("00");
-
-            string s4 = year + month + day + number.ToString("00000"); 
-
-            string s5 = "M05";
-            return (TH + s1 + s2 + s1 + s4 +s1+ s5 ).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-
+            return null;
 
 
         }
 
         public static string createKHM_R(Peifang R)
         {
-            dataSql dataSql = new dataSql();
-            int number = dataSql.getNumner() + 1;
+            return null;
 
-            DateTime now = DateTime.Now;
-            string TH = R.TH_R;
-            string s1 = "/";
-            string s2 = "2CZ";
-            string year = now.Year.ToString().Substring(2, 2);
-            string month = now.Month.ToString().Trim();
-            int m = int.Parse(month);
-            if (m == 10) { month = "A"; }
-            if (m == 11) { month = "B"; }
-            if (m == 12) { month = "C"; }
-            String day = now.Day.ToString("00");
-
-            string s4 = year + month + day + number.ToString("00000");
-
-            string s5 = "M05";
-            return (TH + s1 + s2 + s1 + s4 +s1+ s5).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
 
 
         }
@@ -147,7 +112,20 @@ namespace DaZu_Laser_marking
 
         }
 
+        public static void OpenFolder(string folderPath)
+        {
+            try
+            {
+                Process.Start("explorer.exe", folderPath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+
     }
 
-  
+
 }

@@ -8,19 +8,31 @@ namespace DaZu_Laser_marking.Model
 {
     internal class Peifang
     {
-       public string TH_L;
-       public string TH_R;
-       public int NUMBER;
+        private string name;
+        private string TH;
+        private int NUMBER;
+        private int STR;
+        private string STRs;
+        private int END;
+        private string ENDs;
 
-        public Peifang(string tH_L, string tH_R, int nUMBER)
+        public Peifang(string name, string tH, int nUMBER, int sTR, string sTRs, int eND, string eNDs)
         {
-            TH_L1 = tH_L;
-            TH_R1 = tH_R;
+            this.Name = name;
+            TH1 = tH;
             NUMBER1 = nUMBER;
+            STR1 = sTR;
+            STRs1 = sTRs;
+            END1 = eND;
+            ENDs1 = eNDs;
         }
 
-        public string TH_L1 { get => TH_L; set => TH_L = value; }
-        public string TH_R1 { get => TH_R; set => TH_R = value; }
+        public string Name { get => name; set => name = value; }
+        public string TH1 { get => TH; set => TH = value; }
         public int NUMBER1 { get => NUMBER; set => NUMBER = value; }
+        public int STR1 { get => STR; set => STR = value; }
+        public string STRs1 { get => STRs; set => STRs = value; }
+        public int END1 { get => END; set => END = value; }
+        public string ENDs1 { get => ENDs; set => ENDs = value; }
     }
 }

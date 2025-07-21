@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DaZu_Laser_marking.SQLite
 {
@@ -55,11 +57,23 @@ namespace DaZu_Laser_marking.SQLite
                         {
                             if (reader.Read()) // 读取一行
                             {
-                                result.Add(reader[0]);
-                                result.Add(reader[1]);
-                                result.Add(reader[2]);
-                                result.Add(reader[3]);
-                                result.Add(reader[4]);
+
+                                try
+                                {
+                                    result.Add(reader[0]);
+                                    result.Add(reader[1]);
+                                    result.Add(reader[2]);
+                                    result.Add(reader[3]);
+                                    result.Add(reader[4]);
+                                    result.Add(reader[5]);
+                                    result.Add(reader[6]);
+                                    result.Add(reader[7]);
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+
 
 
 
@@ -77,6 +91,39 @@ namespace DaZu_Laser_marking.SQLite
 
             }
             return result;
+        }
+
+
+        public void updateByID(string name , string th , int num , int str , string strs , int end , string ends , int id) {
+
+            try
+            {
+                using (var connection = new SQLiteConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "UPDATE PF SET NAME=@name,TH=@th,NUMBER=@number,STR=@str,STRs=@strs,[END]=@end,ENDs=@ends WHERE ID=@id";
+
+                    using (var command = new SQLiteCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@name", name);
+                        command.Parameters.AddWithValue("@th", th);
+                        command.Parameters.AddWithValue("@number", num);
+                        command.Parameters.AddWithValue("@str", str);
+                        command.Parameters.AddWithValue("@strs", strs);
+                        command.Parameters.AddWithValue("@end", end);
+                        command.Parameters.AddWithValue("@ends", ends);
+                        command.Parameters.AddWithValue("@id", id);
+                        int rowsAffected = command.ExecuteNonQuery(); // 执行更新
+                        Console.WriteLine($"{rowsAffected} rows updated.");
+                        MessageBox.Show("保存成功!");
+                    }
+                }
+            }
+            catch (Exception ex){
+                Program.Logger.Info(ex.Message);
+            }
+
+
         }
     }
 }

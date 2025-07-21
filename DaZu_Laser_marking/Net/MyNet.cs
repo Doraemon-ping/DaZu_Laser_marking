@@ -32,13 +32,13 @@ namespace DaZu_Laser_marking.NET
 
         }
 
-        public static bool isConnettionToIp(string ip)
+        public static async  Task <bool> isConnettionToIp(string ip)
         {
             try
             {
                 using (Ping ping = new Ping())
                 {
-                    PingReply reply = ping.Send(ip);
+                    PingReply reply = await ping.SendPingAsync(ip);
                     return reply.Status == IPStatus.Success;
                 }
             }
@@ -47,7 +47,7 @@ namespace DaZu_Laser_marking.NET
             catch (Exception ex)
             {
                 // 处理可能的异常，例如 Ping 请求超时、地址无效等
-                Console.WriteLine($"Error: {ex.Message}");
+                Program.Logger.Info($"Error: {ex.Message}");
                 return false;
             }
 
