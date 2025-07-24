@@ -43,20 +43,31 @@ namespace DaZu_Laser_marking
             return file;
         }
 
-        public static int isLorR(string code)
+        public static int isLorR(string code,Peifang L , Peifang R)
         {
 
-            int number = 25;
+            int number = L.NUMBER1;
+            string LH = L.TH1;
+            string RH = R.TH1;
 
-            string LH = "20073669";
-            string RH = "20073672";
-            string BZ = "T";
+            string BZL1 = L.STRs1;
+            string BZL2 = L.ENDs1;
+
+            string BZR1 = R.STRs1;
+            string BZR2 = R.ENDs1;
+
 
             int codeLenght = code.Length;
             string code1;
             string code2;
 
-            System.Console.WriteLine(codeLenght);
+            Program.Logger.Info("收到二维码:"+code);
+            Program.Logger.Info("左图号:" + BZL1);
+            Program.Logger.Info("右图号:" + BZL2);
+
+
+
+
 
             if (codeLenght != number )
             {
@@ -65,18 +76,20 @@ namespace DaZu_Laser_marking
             else
             {
                 //从0开始截取位数，长度
-                code1 = code.Substring(0, 1);
-                code2 = code.Substring(1, 8);
+                code1 = code.Substring(L.STR1-1, BZL1.Length);
+                code2 = code.Substring(L.END1 - 1, BZL2.Length);
             }//位数不对，直接返回
 
-            bool isBz = BZ.Equals(code1);
-            bool isBz1 = LH.Equals(code2);
-            bool isBz2 = RH.Equals(code2);
+            bool L1 = BZL1.Equals(code1);
+            bool L2 = BZL2.Equals(code2);
+
+            bool R1 = BZR1.Equals(code1);
+            bool R2 = BZR2.Equals(code2);
 
 
-            if (isBz&&isBz1) { return 1; }
+            if (L1&&L2) { return 1; }
 
-            if (isBz && isBz2) { return 2; }
+            if (R1 && R2) { return 2; }
 
 
 

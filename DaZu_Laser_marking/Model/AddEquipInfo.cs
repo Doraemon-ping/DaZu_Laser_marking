@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -71,6 +72,14 @@ namespace DaZu_Laser_marking.Model
             IsCheckRepeat = isCheckRepeat;
             IsReject = isReject;
             DetailTable = detailTable;
+        }
+
+        public void clean()
+        {
+            this.barCode = null;
+            this.mainPartCode = null;
+            this.childPartCode = null;
+            
         }
     }
 }

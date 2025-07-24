@@ -12,7 +12,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace DaZu_Laser_marking.SQLite
 {
-    internal class dataSql
+    public class dataSql
     {
         private string connectionString;
 

@@ -13,11 +13,15 @@ namespace DaZu_Laser_marking
 {
     public partial class PeifangForm : Form
     {
-        PeiFangSql data;
+        PeiFangSql PL;
+        PeiFangSql PR;
+
         public PeifangForm()
         {
             InitializeComponent();
-            data = new PeiFangSql();
+            PL = new PeiFangSql("L");
+            PR = new PeiFangSql("R");
+
             load();
           
 
@@ -25,8 +29,8 @@ namespace DaZu_Laser_marking
 
         void load() {
 
-            List<object> res1 = data.getById(1);
-            List<object> res2 = data.getById(2);
+            List<object> res1 = PL.getById();
+            List<object> res2 = PR.getById();
 
 
             try
@@ -71,7 +75,7 @@ namespace DaZu_Laser_marking
                 int STR_N_L = int.Parse(textBox5.Text);
                 string END_L = textBox7.Text;
                 int END_N_L = int.Parse(textBox6.Text);
-                data.updateByID(name_L, TH_l, NUM_L, STR_N_L, STR_L, END_N_L, END_L,1);
+                PL.updateByID(name_L, TH_l, NUM_L, STR_N_L, STR_L, END_N_L, END_L);
                 load();
 
             }
@@ -94,7 +98,7 @@ namespace DaZu_Laser_marking
                 int STR_N_R = int.Parse(textBox10.Text);
                 string END_R = textBox9.Text;
                 int END_N_R = int.Parse(textBox8.Text);
-                data.updateByID(name_R, TH_R, NUM_R, STR_N_R, STR_R, END_N_R, END_R, 2);
+                PR.updateByID(name_R, TH_R, NUM_R, STR_N_R, STR_R, END_N_R, END_R);
                 load();
 
 

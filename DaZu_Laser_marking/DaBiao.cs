@@ -17,7 +17,7 @@ using static System.Net.Mime.MediaTypeNames;
 namespace DaZu_Laser_marking
 {
     //打标协议的实现
-    internal class DaBiao
+    public class DaBiao
     {
         private string IP;
         private string PORT;
@@ -31,6 +31,11 @@ namespace DaZu_Laser_marking
 
         private async Task SendMessageAsync(string message)
         {
+            if (stream == null)
+            {
+                return;
+            }
+
             try
             {
                 byte[] buffer = Encoding.UTF8.GetBytes(message);
@@ -44,6 +49,11 @@ namespace DaZu_Laser_marking
 
         private async Task<string> ReceiveMessageAsync()
         {
+            if (stream == null)
+            {
+                return "\r\n\t\"F\":\t\"Login_S2C\",\r\n\t\"status\":\t\"fail\"\r\n}#\r\n";
+            }
+
             try
             {
                 byte[] buffer = new byte[1024];
@@ -107,7 +117,8 @@ namespace DaZu_Laser_marking
             catch (Exception ex)
             {
                 Program.Logger.Error(ex);
-                return ex.Message;
+                string json = System.Text.Json.JsonSerializer.Serialize(new Eresponse("fail"));
+                return json;
             }
             finally
             {
@@ -136,7 +147,8 @@ namespace DaZu_Laser_marking
             catch (Exception ex)
             {
                 Program.Logger.Error(ex);
-                return ex.Message;
+                string json = System.Text.Json.JsonSerializer.Serialize(new Eresponse("fail"));
+                return json;
             }
             finally
             {
@@ -165,7 +177,8 @@ namespace DaZu_Laser_marking
             catch (Exception ex)
             {
                 Program.Logger.Error(ex);
-                return ex.Message;
+                string json = System.Text.Json.JsonSerializer.Serialize(new Eresponse("fail"));
+                return json;
             }
             finally
             {
@@ -192,7 +205,8 @@ namespace DaZu_Laser_marking
             catch (Exception ex)
             {
                 Program.Logger.Error(ex);
-                return ex.Message;
+                string json = System.Text.Json.JsonSerializer.Serialize(new Eresponse("fail"));
+                return json;
             }
             finally
             {
@@ -220,7 +234,10 @@ namespace DaZu_Laser_marking
             catch (Exception ex)
             {
                 Program.Logger.Error(ex);
-                return ex.Message;
+                string json = System.Text.Json.JsonSerializer.Serialize(new Eresponse("fail"));
+                Program.Logger.Error(json);
+
+                return json;
             }
             finally
             {
@@ -247,7 +264,8 @@ namespace DaZu_Laser_marking
             catch (Exception ex)
             {
                 Program.Logger.Error(ex);
-                return ex.Message;
+                string json = System.Text.Json.JsonSerializer.Serialize(new Eresponse("fail"));
+                return json;
             }
             finally
             {
@@ -274,7 +292,8 @@ namespace DaZu_Laser_marking
             catch (Exception ex)
             {
                 Program.Logger.Error(ex);
-                return ex.Message;
+                string json = System.Text.Json.JsonSerializer.Serialize(new Eresponse("fail"));
+                return json;
             }
             finally
             {
@@ -307,7 +326,8 @@ namespace DaZu_Laser_marking
             catch (Exception ex)
             {
                 Program.Logger.Error(ex);
-                return ex.Message;
+                string json = System.Text.Json.JsonSerializer.Serialize(new Eresponse("fail"));
+                return json;
             }
             finally
             {

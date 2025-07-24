@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DaZu_Laser_marking.Model
 {
-    internal class Peifang
+    public class Peifang
     {
         private string name;
         private string TH;

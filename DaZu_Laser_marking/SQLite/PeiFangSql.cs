@@ -1,6 +1,7 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
@@ -13,8 +14,10 @@ namespace DaZu_Laser_marking.SQLite
     internal class PeiFangSql
     {
         private string connectionString;
+        private int Pid = 0;
 
-        public PeiFangSql()
+
+        public PeiFangSql(string s)
         {
             DateTime dateTime = DateTime.Now;
             string riqi = dateTime.Year.ToString() + "_" + dateTime.Month.ToString();
@@ -27,6 +30,35 @@ namespace DaZu_Laser_marking.SQLite
             connectionString = $"Data Source={absoluteDbFilePath};Version=3;";
             Console.WriteLine(connectionString);
             //load();
+
+            s = s.ToUpper();
+
+            if (s == "L")
+            {
+                try
+                {
+                    Pid = int.Parse(ConfigurationManager.ConnectionStrings["PFLID"].ConnectionString);
+
+                }
+                catch (Exception ex)
+                {
+                    Program.Logger.Info(ex.Message);
+                }
+            }
+            else if (s == "R") 
+            {
+                try
+                {
+                    Pid = int.Parse(ConfigurationManager.ConnectionStrings["PFRID"].ConnectionString);
+
+                }
+                catch (Exception ex)
+                {
+                    Program.Logger.Info(ex.Message);
+                }
+            }
+
+            
         }
 
         public void load()
@@ -37,7 +69,7 @@ namespace DaZu_Laser_marking.SQLite
 
        
 
-        public List<object> getById(int id)
+        public List<object> getById()
         {
             List<object> result = new List<object>();
             try
@@ -50,7 +82,7 @@ namespace DaZu_Laser_marking.SQLite
                     using (var command = new SQLiteCommand(selectQuery, connection))
                     {
                         // 添加查询参数
-                        command.Parameters.AddWithValue("@ID", id);
+                        command.Parameters.AddWithValue("@ID", Pid);
                        // command.Parameters.AddWithValue("@NAME", name);
 
                         using (SQLiteDataReader reader = command.ExecuteReader())
@@ -94,7 +126,7 @@ namespace DaZu_Laser_marking.SQLite
         }
 
 
-        public void updateByID(string name , string th , int num , int str , string strs , int end , string ends , int id) {
+        public void updateByID(string name , string th , int num , int str , string strs , int end , string ends ) {
 
             try
             {
@@ -112,7 +144,7 @@ namespace DaZu_Laser_marking.SQLite
                         command.Parameters.AddWithValue("@strs", strs);
                         command.Parameters.AddWithValue("@end", end);
                         command.Parameters.AddWithValue("@ends", ends);
-                        command.Parameters.AddWithValue("@id", id);
+                        command.Parameters.AddWithValue("@id", Pid);
                         int rowsAffected = command.ExecuteNonQuery(); // 执行更新
                         Console.WriteLine($"{rowsAffected} rows updated.");
                         MessageBox.Show("保存成功!");

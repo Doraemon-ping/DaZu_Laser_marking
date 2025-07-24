@@ -78,11 +78,11 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("华文中宋", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label1.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.label1.Location = new System.Drawing.Point(244, 15);
+            this.label1.Location = new System.Drawing.Point(244, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1057, 82);
+            this.label1.Size = new System.Drawing.Size(911, 82);
             this.label1.TabIndex = 3;
-            this.label1.Text = "转向节系统三部客户码打标程序";
+            this.label1.Text = "转向节系统三部客户码打标";
             // 
             // groupBox1
             // 
@@ -264,6 +264,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(813, 44);
             this.textBox1.TabIndex = 14;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // groupBox2
             // 
@@ -278,9 +279,9 @@
             this.groupBox2.Controls.Add(this.textBox1);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBox2.Location = new System.Drawing.Point(258, 126);
+            this.groupBox2.Location = new System.Drawing.Point(258, 109);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1038, 660);
+            this.groupBox2.Size = new System.Drawing.Size(1038, 677);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "生产页面";
@@ -401,5 +402,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Label label9;
+       
     }
 }
