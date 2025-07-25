@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -29,12 +30,14 @@ namespace DaZu_Laser_marking
                                               List<string> Equpments
             ){
 
-            MessageBox.Show("打标");
+            // MessageBox.Show("打标");
+
+            DB.Load();
 
             if (status.IsRecode == false)
             {
                 //不重码
-                MessageBox.Show("不重码正常生产！");
+             //  MessageBox.Show("不重码正常生产！");
                 //本地保存
                 try
                 {
@@ -77,12 +80,15 @@ namespace DaZu_Laser_marking
                 }
                 
                 //打标
-                status.Res = "左件开始打标\n" + status.Res ;
+              
                 Program.Logger.Info("正常模式，铸造码：" + mes.barCode + "客户码：" + mes.mainPartCode);
 
+              
                 try
                 {
                     string re = await DB.Login();
+                    Thread.Sleep(100);
+
                     var jsonObjres = JObject.Parse(re.Replace("#", ""));
                     if (jsonObjres["status"].ToString() == "success")
                     {
@@ -136,11 +142,11 @@ namespace DaZu_Laser_marking
             else
             {
                 //重码
-                MessageBox.Show("重码正常生产！");
+               // MessageBox.Show("重码正常生产！");
 
-                status.Res = "左件开始打标\n" + status.Res;
                 Program.Logger.Info("正常模式，铸造码：" + mes.barCode + "客户码：" + mes.mainPartCode);
 
+               
                 try
                 {
                     string re = await DB.Login();
@@ -162,9 +168,14 @@ namespace DaZu_Laser_marking
                 {
                     status.Res = "登录失败!" + "\n" + status.Res;
                 }
+
                 string ymd = mes.mainPartCode.Substring(17, 10);
                 string res1 = await DB.upDateText(pox1, mes.mainPartCode, FileName);//替换二维码
+                Thread.Sleep(100);
+
                 string res2 = await DB.upDateText(pox2, ymd, FileName);//替换序列号
+                Thread.Sleep(100);
+
 
                 try
                 {
@@ -196,6 +207,8 @@ namespace DaZu_Laser_marking
                 {
                     status.Res = "写入失败!" + "\n" + status.Res;
                 }
+
+               
             }
         }
 

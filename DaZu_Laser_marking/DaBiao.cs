@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.Sockets;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DaZu_Laser_marking.Model;
@@ -26,6 +29,40 @@ namespace DaZu_Laser_marking
         private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
 
 
+        public DaBiao(int id, string name)
+        {
+
+            try
+            {
+                MySqlite msl = new MySqlite();
+                List<object> result = msl.getByIdName(id, name);
+                IP1 = result[0].ToString();
+                PORT1 = result[1].ToString();
+                Console.WriteLine(IP + ":" + PORT);
+               
+            }
+            catch (Exception ex)
+            {
+                Program.Logger.Info(ex.Message);
+            }
+        }
+
+
+        public void Load()
+        {
+            Dispose();
+            tcpClient = new TcpClient(IP1, int.Parse(PORT1));
+            stream = tcpClient.GetStream();
+        }
+
+        public void Dispose()
+        {
+            Program.Logger.Info("销毁！");
+            tcpClient?.Dispose();
+            stream?.Dispose();
+        }
+
+
         public string IP1 { get => IP; set => IP = value; }
         public string PORT1 { get => PORT; set => PORT = value; }
 
@@ -33,6 +70,7 @@ namespace DaZu_Laser_marking
         {
             if (stream == null)
             {
+                Program.Logger.Info("发送Stream  is NULL!");
                 return;
             }
 
@@ -51,7 +89,8 @@ namespace DaZu_Laser_marking
         {
             if (stream == null)
             {
-                return "\r\n\t\"F\":\t\"Login_S2C\",\r\n\t\"status\":\t\"fail\"\r\n}#\r\n";
+                Program.Logger.Info("接收Stream  is NULL!");
+                return "\r\n\t\"F\":\t\"Login_S2C\",\r\n\t\"status\":\t\"ERROR\"\r\n}#\r\n";
             }
 
             try
@@ -70,28 +109,12 @@ namespace DaZu_Laser_marking
         }
 
 
-        public DaBiao(int id, string name)
-        {
+       
 
-            try
-            {
-                MySqlite msl = new MySqlite();
-                List<object> result = msl.getByIdName(id, name);
-                IP1 = result[0].ToString();
-                PORT1 = result[1].ToString();
-                Console.WriteLine(IP + ":" + PORT);
-                tcpClient = new TcpClient(IP1, int.Parse(PORT1));
-                stream = tcpClient.GetStream();
 
-            }
-            catch (Exception ex) {
-                Program.Logger.Info(ex.Message);
-            
-            }
 
-          
 
-        }
+
         //登录
         public async Task<string>  Login()
         {

@@ -340,6 +340,7 @@ namespace DaZu_Laser_marking
             try
             {
                 LD = new DaBiao(1, "打标机1");
+                LD.Load();
                 await LD.Login();
                 string resL = await LD.GetAllEqupments();
                 resL = resL.Replace("#", "");
@@ -365,6 +366,7 @@ namespace DaZu_Laser_marking
             try
             {
                 RD = new DaBiao(2, "打标机2");
+                RD.Load();
                 await RD.Login();
                 string resR = await RD.GetAllEqupments();
                 resR = resR.Replace("#", "");
@@ -424,9 +426,9 @@ namespace DaZu_Laser_marking
 
             if (status.Lr == 1)
             {
-                MessageBox.Show("左件生产");
-                MessageBox.Show(mesMod.mainPartCode);
-                MessageBox.Show(Lid.ToString());
+              //  MessageBox.Show("左件生产");
+               // MessageBox.Show(mesMod.mainPartCode);
+              //  MessageBox.Show(Lid.ToString());
 
 
                 switch (Lid)
@@ -439,6 +441,7 @@ namespace DaZu_Laser_marking
                     case 5:
                         break;
                     case 7:
+                        status.Res = "左件开始打标\n" + status.Res;
                         await MarkAndUpload.MarkW04Async(mesMod,LD,data,URL,status,pox1,pox2,FineName_L,Lequpment);
                         break;
                 }
@@ -450,7 +453,7 @@ namespace DaZu_Laser_marking
 
             if (status.Lr == 2)
             {
-                MessageBox.Show("右件生产");
+               // MessageBox.Show("右件生产");
 
                 switch (Rid)
                 {
@@ -462,6 +465,7 @@ namespace DaZu_Laser_marking
                     case 6:
                         break;
                     case 8:
+                        status.Res = "右件开始打标\n" + status.Res;
                         await MarkAndUpload.MarkW04Async(mesMod, RD, data, URL, status, pox1, pox2, FineName_R, Requpment);
                         break;
                 }
