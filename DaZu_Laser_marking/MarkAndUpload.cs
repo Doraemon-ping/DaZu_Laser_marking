@@ -41,6 +41,17 @@ namespace DaZu_Laser_marking
                 //本地保存
                 try
                 {
+                    if (MyTool.isNotCm(mes.barCode))
+                    {
+                        dsq.insert(mes.BarCode, mes.mainPartCode, DateTime.Now);
+                        status.Save1 = 2;
+                        status.Res = "本地保存成功!" + "\n" + status.Res;
+                    }
+                    else 
+                    {
+                        status.Res = "本地已保存!" + "\n" + status.Res;
+                    }
+
                     dsq.insert(mes.BarCode, mes.mainPartCode, DateTime.Now);
                     status.Save1 = 2;
                     status.Res = "本地保存成功!" + "\n" + status.Res;
