@@ -35,10 +35,12 @@
             this.主页ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.打标机配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mes配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.配方管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.数据导出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.日志ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.测试ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.配方管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,7 +60,9 @@
             this.mes配置ToolStripMenuItem,
             this.配方管理ToolStripMenuItem,
             this.数据导出ToolStripMenuItem,
-            this.日志ToolStripMenuItem});
+            this.日志ToolStripMenuItem,
+            this.测试ToolStripMenuItem,
+            this.退出ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1364, 32);
@@ -86,6 +90,13 @@
             this.mes配置ToolStripMenuItem.Text = "mes配置";
             this.mes配置ToolStripMenuItem.Click += new System.EventHandler(this.mes配置ToolStripMenuItem_Click);
             // 
+            // 配方管理ToolStripMenuItem
+            // 
+            this.配方管理ToolStripMenuItem.Name = "配方管理ToolStripMenuItem";
+            this.配方管理ToolStripMenuItem.Size = new System.Drawing.Size(98, 28);
+            this.配方管理ToolStripMenuItem.Text = "配方管理";
+            this.配方管理ToolStripMenuItem.Click += new System.EventHandler(this.配方管理ToolStripMenuItem_Click);
+            // 
             // 数据导出ToolStripMenuItem
             // 
             this.数据导出ToolStripMenuItem.Name = "数据导出ToolStripMenuItem";
@@ -100,6 +111,13 @@
             this.日志ToolStripMenuItem.Text = "日志";
             this.日志ToolStripMenuItem.Click += new System.EventHandler(this.日志ToolStripMenuItem_Click);
             // 
+            // 测试ToolStripMenuItem
+            // 
+            this.测试ToolStripMenuItem.Name = "测试ToolStripMenuItem";
+            this.测试ToolStripMenuItem.Size = new System.Drawing.Size(62, 28);
+            this.测试ToolStripMenuItem.Text = "测试";
+            this.测试ToolStripMenuItem.Click += new System.EventHandler(this.测试ToolStripMenuItem_Click);
+            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
@@ -108,12 +126,12 @@
             this.panel1.Size = new System.Drawing.Size(1330, 850);
             this.panel1.TabIndex = 2;
             // 
-            // 配方管理ToolStripMenuItem
+            // 退出ToolStripMenuItem
             // 
-            this.配方管理ToolStripMenuItem.Name = "配方管理ToolStripMenuItem";
-            this.配方管理ToolStripMenuItem.Size = new System.Drawing.Size(98, 28);
-            this.配方管理ToolStripMenuItem.Text = "配方管理";
-            this.配方管理ToolStripMenuItem.Click += new System.EventHandler(this.配方管理ToolStripMenuItem_Click);
+            this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(62, 28);
+            this.退出ToolStripMenuItem.Text = "退出";
+            this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
             // Form2
             // 
@@ -144,5 +162,7 @@
         private System.Windows.Forms.ToolStripMenuItem 数据导出ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 日志ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 配方管理ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 测试ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
     }
 }

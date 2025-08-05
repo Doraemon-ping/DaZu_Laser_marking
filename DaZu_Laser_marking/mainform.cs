@@ -1,67 +1,86 @@
-﻿
-using DaZu_Laser_marking.Model;
-using DaZu_Laser_marking.NET;
-using DaZu_Laser_marking.SQLite;
-using Microsoft.Office.Interop.Excel;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Security.Cryptography;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace DaZu_Laser_marking
+﻿namespace DaZu_Laser_marking
 {
+    using DaZu_Laser_marking.Model;
+    using DaZu_Laser_marking.NET;
+    using DaZu_Laser_marking.SQLite;
+    using Newtonsoft.Json.Linq;
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Drawing;
+    using System.Threading;
+    using System.Windows.Forms;
+
     public partial class mainform : Form
     {
         //选择配方
-        private readonly int Lint = 3;
-        private readonly int Rint = 4;
 
+        internal MainFormStatus status;
 
-        MainFormStatus status;
-        NetStatus netStatus;
-        Thread freshThread;
-        Thread netCheekThread;
-        Peifang Litem;
-        Peifang Ritem;
-        dataSql data;
-        FreshStatus FreshStatus;//更新左右码状态
+        internal NetStatus netStatus;
+
+        internal Thread freshThread;
+
+        internal Thread netCheekThread;
+
+        internal Peifang Litem;
+
+        internal Peifang Ritem;
+
+        internal dataSql data;
+
+        internal FreshStatus FreshStatus;//更新左右码状态
 
         //打标机NET
-        string IP_L;
-        string Port_L;
-        string IP_R;
-        string Port_R;
-        string IP_mes;
-        string Port_mes;
-        string URL;
+
+        internal string IP_L;
+
+        internal string Port_L;
+
+        internal string IP_R;
+
+        internal string Port_R;
+
+        internal string IP_mes;
+
+        internal string Port_mes;
+
+        internal string URL;
+
         private readonly String APIadd = "/api/AddEquipInfo";
 
-        bool _isHandlingTextChanged = false;
+        internal bool _isHandlingTextChanged = false;
 
         //dabiao
-        DaBiao LD;//左打标机
-        DaBiao RD;//右打标机
-        List<string> Lequpment;
-        List<string> Requpment;
-        string FineName_L;
-        string FineName_R;
-        int pox1;
-        int pox2;
-        int pox3;
-        int Lid;
-        int Rid;
+
+        internal DaBiao LD;//左打标机
+
+        internal DaBiao RD;//右打标机
+
+        internal List<string> Lequpment;
+
+        internal List<string> Requpment;
+
+        internal string FineName_L;
+
+        internal string FineName_R;
+
+        internal int pox1;
+
+        internal int pox2;
+
+        internal int pox3;
+
+        internal int pox4;
+
+
+        internal int Lid;
+
+        internal int Rid;
 
         //MesMod
-        Model.AddEquipInfo mesMod;
 
+        internal Model.AddEquipInfo mesMod;
 
         public mainform()
         {
@@ -74,14 +93,11 @@ namespace DaZu_Laser_marking
             netCheekThread = new Thread(cheekConnection);
             netCheekThread.Start();
 
-
             freshThread = new Thread(fresh);
             freshThread.Start();
 
             //获取报工实体
             getAdMod();
-
-
         }
 
         public void getAdMod()
@@ -96,6 +112,7 @@ namespace DaZu_Laser_marking
         }
 
         // 用来确保 UI 线程更新控件
+
         private void UpdateLabelBackColor(System.Windows.Forms.Label label, Color color)
         {
             if (label.InvokeRequired)
@@ -109,7 +126,8 @@ namespace DaZu_Laser_marking
         }
 
         //刷新UI
-        void fresh()
+
+        internal void fresh()
         {
 
             while (true)
@@ -244,7 +262,8 @@ namespace DaZu_Laser_marking
 
                 if (richTextBox1.InvokeRequired)
                 {
-                    richTextBox1.Invoke(new System.Action(() => {
+                    richTextBox1.Invoke(new System.Action(() =>
+                    {
                         richTextBox1.Text = status.Res;
                     }
                     ));
@@ -254,14 +273,12 @@ namespace DaZu_Laser_marking
                     richTextBox1.Text = status.Res;
                 }
 
-
             }
         }
 
         //开始标刻
-        
 
-        async void cheekConnection()
+        internal async void cheekConnection()
         {
 
             while (true)
@@ -271,7 +288,6 @@ namespace DaZu_Laser_marking
                 if (await MyNet.isConnettionToIp(IP_R)) { netStatus.IpR = 1; } else { netStatus.IpR = 0; }
                 if (await MyNet.isConnettionToIp(IP_mes)) { netStatus.IpMes = 1; } else { netStatus.IpMes = 0; }
             }
-
         }
 
         private async void mainform_LoadAsync()
@@ -306,7 +322,6 @@ namespace DaZu_Laser_marking
             //初始化数据增删对象
             data = new dataSql();
 
-
             textBox1.Multiline = true;
             textBox1.AcceptsReturn = true; // 允许按Enter键输入换行
 
@@ -321,6 +336,7 @@ namespace DaZu_Laser_marking
                 pox1 = int.Parse(ConfigurationManager.ConnectionStrings["pox1"].ConnectionString);
                 pox2 = int.Parse(ConfigurationManager.ConnectionStrings["pox2"].ConnectionString);
                 pox3 = int.Parse(ConfigurationManager.ConnectionStrings["pox3"].ConnectionString);
+                pox4 = int.Parse(ConfigurationManager.ConnectionStrings["pox4"].ConnectionString);
 
                 Lid = int.Parse(ConfigurationManager.ConnectionStrings["PFLID"].ConnectionString);
                 Rid = int.Parse(ConfigurationManager.ConnectionStrings["PFRID"].ConnectionString);
@@ -334,8 +350,6 @@ namespace DaZu_Laser_marking
             {
                 Program.Logger.Info(ex.Message);
             }
-            
-           
 
             try
             {
@@ -349,7 +363,8 @@ namespace DaZu_Laser_marking
                 {
                     Program.Logger.Info("左件获取成功!");
                 }
-                else {
+                else
+                {
                     Program.Logger.Info("左件获取失败!");
                 }
 
@@ -389,8 +404,8 @@ namespace DaZu_Laser_marking
             {
                 Program.Logger.Info(ex.Message);
             }
-
         }
+
         private void Form_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -399,7 +414,7 @@ namespace DaZu_Laser_marking
                     ShowHelp(); // 执行你的函数
                     e.Handled = true; // 标记为已处理
                     break;
-               
+
             }
         }
 
@@ -420,16 +435,14 @@ namespace DaZu_Laser_marking
             {
                 MessageBox.Show("请先扫二维码！");
                 return;
-            
+
             }
-           
 
             if (status.Lr == 1)
             {
-              //  MessageBox.Show("左件生产");
-               // MessageBox.Show(mesMod.mainPartCode);
-              //  MessageBox.Show(Lid.ToString());
-
+                //  MessageBox.Show("左件生产");
+                // MessageBox.Show(mesMod.mainPartCode);
+                //  MessageBox.Show(Lid.ToString());
 
                 switch (Lid)
                 {
@@ -437,23 +450,24 @@ namespace DaZu_Laser_marking
                     case 1:
                         break;
                     case 3:
+                        status.Res = "E3S6前转左件开始打标\n" + status.Res;
+                        await MarkAndUpload.MarkE3S6Async(mesMod, LD, data, URL, status, pox1, pox2, pox3, pox4, FineName_L, Lequpment);
                         break;
                     case 5:
+                        status.Res = "E3S6后转左件开始打标\n" + status.Res;
+                        await MarkAndUpload.MarkE3S6Async(mesMod, LD, data, URL, status, pox1, pox2, pox3, pox4, FineName_L, Lequpment);
                         break;
                     case 7:
                         status.Res = "左件开始打标\n" + status.Res;
-                        await MarkAndUpload.MarkW04Async(mesMod,LD,data,URL,status,pox1,pox2,FineName_L,Lequpment);
+                        await MarkAndUpload.MarkW04Async(mesMod, LD, data, URL, status, pox1, pox2, FineName_L, Lequpment);
                         break;
                 }
 
-                
-
             }
-
 
             if (status.Lr == 2)
             {
-               // MessageBox.Show("右件生产");
+                // MessageBox.Show("右件生产");
 
                 switch (Rid)
                 {
@@ -461,8 +475,12 @@ namespace DaZu_Laser_marking
                     case 2:
                         break;
                     case 4:
+                        status.Res = "E3S6前转右件开始打标\n" + status.Res;
+                        await MarkAndUpload.MarkE3S6Async(mesMod, RD, data, URL, status, pox1, pox2, pox3, pox4, FineName_R, Requpment);
                         break;
                     case 6:
+                        status.Res = "E3S6后转右件开始打标\n" + status.Res;
+                        await MarkAndUpload.MarkE3S6Async(mesMod, RD, data, URL, status, pox1, pox2, pox3, pox4, FineName_R, Requpment);
                         break;
                     case 8:
                         status.Res = "右件开始打标\n" + status.Res;
@@ -471,10 +489,7 @@ namespace DaZu_Laser_marking
                 }
 
             }
-
-
         }
-
 
         private void LocalNet()
         {
@@ -507,10 +522,10 @@ namespace DaZu_Laser_marking
             {
                 Program.Logger.Info(ex.ToString());
             }
-
         }
 
         //输入铸造码，开始工作
+
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             // 检查是否已经在处理 TextChanged 事件
@@ -576,8 +591,7 @@ namespace DaZu_Laser_marking
                         status.clean();
                     }
 
-
-                    string code = textBox1.Text.Replace("\r\n", "").Replace("\n", "").Replace("\r", "").Replace(" ",""); //删除换行
+                    string code = textBox1.Text.Replace("\r\n", "").Replace("\n", "").Replace("\r", "").Replace(" ", ""); //删除换行
 
                     code = code.ToUpper(); // 示例：将文本转换为大写
                                            // richTextBox1.SelectionStart = richTextBox1.Text.Length; // 保持光标位置
@@ -602,17 +616,15 @@ namespace DaZu_Laser_marking
                             status.KehumaLab = 2;
                             status.Lr = 1;
                         }
-                        else {
+                        else
+                        {
                             //重码
-                            textBox3.Text =  data.getKHM(code);
+                            textBox3.Text = data.getKHM(code);
                             status.KehumaLab = 2;
                             status.Lr = 1;
                             status.Res = "铸造重码" + "\n" + status.Res;
 
                         }
-
-
-
 
                     }
                     if (lr == 2)
@@ -660,31 +672,33 @@ namespace DaZu_Laser_marking
         }
 
         //实现此方法用户根据规则获取客户码以及替换字符串
+
         public List<string> UpdateCode(string s)
         {
             string res = s.ToUpper();
-          
-            List<string> result = new List<string>();
 
+            List<string> result = new List<string>();
 
             if (res == "L")
             {
                 //生成左件客户码
-                switch (Lid) {
+                switch (Lid)
+                {
 
                     case 1:
                         //LEO左前
                         break;
                     case 3:
                         //E3S6左前
-                        result.Add(Code.GetNewCode.GetNewCodeE3S6("FKLH",Litem));
+                        result.Add(Code.GetNewCode.GetNewCodeE3S6("FKLH", Litem));
                         break;
                     case 5:
                         //E3S6左后
+                        result.Add(Code.GetNewCode.GetNewCodeE3S6("RKLH", Litem));
                         break;
                     case 7:
                         //W04L
-                        result.Add(Code.GetNewCode.GetNewCodeW04("L",Litem));
+                        result.Add(Code.GetNewCode.GetNewCodeW04("L", Litem));
                         break;
                 }
             }
@@ -701,6 +715,7 @@ namespace DaZu_Laser_marking
                         result.Add(Code.GetNewCode.GetNewCodeE3S6("FKRH", Ritem));
                         break;
                     case 6:
+                        result.Add(Code.GetNewCode.GetNewCodeE3S6("RKRH", Ritem));
                         break;
                     case 8:
                         result.Add(Code.GetNewCode.GetNewCodeW04("R", Ritem));
@@ -708,7 +723,7 @@ namespace DaZu_Laser_marking
                 }
 
             }
-           
+
             //result[0]:客户码
             //result[1],[2]替换字符
 
@@ -716,4 +731,3 @@ namespace DaZu_Laser_marking
         }
     }
 }
-    

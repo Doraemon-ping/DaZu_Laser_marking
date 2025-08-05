@@ -23,6 +23,7 @@ namespace DaZu_Laser_marking
         public Form2()
         {
             InitializeComponent();
+            this.ControlBox = false; // 禁用控制栏（关闭、最小化、最大化按钮全部隐藏）
         }
 
         private void 主页ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -69,7 +70,7 @@ namespace DaZu_Laser_marking
             var logfile = new NLog.Targets.FileTarget("logfile") { FileName = "log" + "\\" + riqi + "\\" + riqi + dateTime.Day.ToString() + "_logfile.txt" };
             string logPath = logfile.FileName.ToString();
 
-           MyTool.OpenFolder(logPath);
+            MyTool.OpenFolder(logPath);
         }
 
         private void 配方管理ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -78,6 +79,20 @@ namespace DaZu_Laser_marking
                 peifangForm = new PeifangForm();
             MyTool.showForm(peifangForm, this.panel1);
 
+        }
+
+        private void 测试ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (form7 == null || form7.IsDisposed)
+                form7 = new Form7();
+            MyTool.showForm(form7, this.panel1);
+
+        }
+
+        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // 退出应用程序
+            Application.Exit();
         }
     }
 }

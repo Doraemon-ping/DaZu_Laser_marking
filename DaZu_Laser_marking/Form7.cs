@@ -33,19 +33,17 @@ namespace DaZu_Laser_marking
         private async void button1_Click(object sender, EventArgs e)
         {
 
-            DaBiao LD = new DaBiao(1, "打标机1");
+            DaBiao daBiao = new DaBiao(2, "打标机2");
 
-            LD = new DaBiao(1, "打标机1");
-            await LD.Login();
-            string resL = await LD.GetAllEqupments();
-            resL = resL.Replace("#", "");
-            getEqupments result1 = System.Text.Json.JsonSerializer.Deserialize<getEqupments>(resL);
+            daBiao.Load();
 
-            //获取左右打码设备号
+            await daBiao.Login();
 
-            List<string> Lequpment = result1.Devices;
+            string s = await daBiao.upDateText(6,"00001","2");
 
-            richTextBox1.Text = Lequpment[0];
+            richTextBox1.Text = s;
+
+
 
 
 
@@ -68,11 +66,11 @@ namespace DaZu_Laser_marking
 
             string URL = "http://10.25.206.7:8861/api/AddEquipInfo";
             string JSON = System.Text.Json.JsonSerializer.Serialize(mesMod);
-            var response = await MyNet.myPost(URL,JSON);
+            var response = await MyNet.myPost(URL, JSON);
             serverResponse serverresponse = JsonConvert.DeserializeObject<serverResponse>(response);
-           
 
-            richTextBox1.Text = response+"\ncode:"+ serverresponse.Code;
+
+            richTextBox1.Text = response + "\ncode:" + serverresponse.Code;
 
 
 

@@ -1,37 +1,30 @@
-﻿using DaZu_Laser_marking.SQLite;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace DaZu_Laser_marking
+﻿namespace DaZu_Laser_marking
 {
-    public partial class PeifangForm : Form
-    {
-        PeiFangSql PL;
-        PeiFangSql PR;
+    using DaZu_Laser_marking.SQLite;
+    using System;
+    using System.Collections.Generic;
+    using System.Windows.Forms;
 
-        public PeifangForm()
+        public partial class PeifangForm : Form
+    {
+                internal PeiFangSql PL;
+
+                internal PeiFangSql PR;
+
+                public PeifangForm()
         {
             InitializeComponent();
             PL = new PeiFangSql("L");
             PR = new PeiFangSql("R");
 
             load();
-          
-
         }
 
-        void load() {
+                internal void load()
+        {
 
             List<object> res1 = PL.getById();
             List<object> res2 = PR.getById();
-
 
             try
             {
@@ -64,7 +57,7 @@ namespace DaZu_Laser_marking
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+                private void button1_Click(object sender, EventArgs e)
         {
             try
             {
@@ -83,11 +76,9 @@ namespace DaZu_Laser_marking
             {
                 MessageBox.Show(ex.Message);
             }
-            
-
         }
 
-        private void button2_Click(object sender, EventArgs e)
+                private void button2_Click(object sender, EventArgs e)
         {
             try
             {
@@ -101,13 +92,11 @@ namespace DaZu_Laser_marking
                 PR.updateByID(name_R, TH_R, NUM_R, STR_N_R, STR_R, END_N_R, END_R);
                 load();
 
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-
         }
     }
 }
