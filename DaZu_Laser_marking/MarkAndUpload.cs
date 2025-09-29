@@ -49,10 +49,6 @@ namespace DaZu_Laser_marking
                         status.Save1 = 2;
                         status.Res = "本地已保存!" + "\n" + status.Res;
                     }
-
-                    dsq.insert(mes.BarCode, mes.mainPartCode, DateTime.Now);
-                    status.Save1 = 2;
-                    status.Res = "本地保存成功!" + "\n" + status.Res;
                 }
                 catch (Exception ex)
                 {
@@ -202,6 +198,8 @@ namespace DaZu_Laser_marking
             }
         }
         public void MarkLeo() { }
+
+
         public static async Task MarkE3S6Async(Model.AddEquipInfo mes,
                                               DaBiao DB,
                                               dataSql dsq,
@@ -237,10 +235,6 @@ namespace DaZu_Laser_marking
                         status.Save1 = 2;
                         status.Res = "本地已保存!" + "\n" + status.Res;
                     }
-
-                    dsq.insert(mes.BarCode, mes.mainPartCode, DateTime.Now);
-                    status.Save1 = 2;
-                    status.Res = "本地保存成功!" + "\n" + status.Res;
                 }
                 catch (Exception ex)
                 {
@@ -354,10 +348,7 @@ namespace DaZu_Laser_marking
             {
                 //重码
                 // MessageBox.Show("重码正常生产！");
-
                 Program.Logger.Info("正常模式，铸造码：" + mes.barCode + "客户码：" + mes.mainPartCode);
-
-
                 try
                 {
                     string re = await DB.Login();
@@ -379,22 +370,16 @@ namespace DaZu_Laser_marking
                 {
                     status.Res = "登录失败!" + "\n" + status.Res;
                 }
-
                 string y1 = mes.mainPartCode.Substring(16, 5);
                 string y2 = mes.mainPartCode.Substring(28, 6);
                 string y3 = mes.mainPartCode.Substring(35, 5);
-
                 string res1 = await DB.upDateText(pox1, mes.mainPartCode, FileName);//替换二维码
                 Thread.Sleep(100);
-
                 string res2 = await DB.upDateText(pox2, y1, FileName);//替换序列号
                 Thread.Sleep(100);
-
                 string res3 = await DB.upDateText(pox3, y2, FileName);//替换年月日
                 Thread.Sleep(100);
-
                 string res4 = await DB.upDateText(pox4, y3, FileName);//替换班次
-
                 try
                 {
                     var jsonObj1 = JObject.Parse(res1.Replace("#", ""));
@@ -428,22 +413,7 @@ namespace DaZu_Laser_marking
                 {
                     status.Res = "写入失败!" + "\n" + status.Res;
                 }
-
-
             }
-
-
-
         }
-
-
-
     }
-
-
-
-
-
-
-
 }
