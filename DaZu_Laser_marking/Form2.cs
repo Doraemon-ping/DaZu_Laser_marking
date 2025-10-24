@@ -93,6 +93,7 @@ namespace DaZu_Laser_marking
         {
             // 退出应用程序
             Application.Exit();
+            Application.ExitThread();
         }
     }
 }
