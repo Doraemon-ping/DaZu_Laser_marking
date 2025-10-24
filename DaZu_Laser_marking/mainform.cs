@@ -418,6 +418,14 @@
             }
         }
 
+        private void end()
+        {
+            textBox2.Text = string.Empty;
+            textBox3.Text = string.Empty;
+        }
+
+
+
         private async void ShowHelp()
         {
 
