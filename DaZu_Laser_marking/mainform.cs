@@ -458,19 +458,42 @@
                     case 1:
                         break;
                     case 3:
-                        status.Res = "E3S6前转左件开始打标\n" + status.Res;
-                        await MarkAndUpload.MarkE3S6Async(mesMod, LD, data, URL, status, pox1, pox2, pox3, pox4, FineName_L, Lequpment);
+                        try
+                        {
+                            status.Res = "E3S6前转左件开始打标\n" + status.Res;
+                            await MarkAndUpload.MarkE3S6Async(mesMod, LD, data, URL, status, pox1, pox2, pox3, pox4, FineName_L, Lequpment);
+                            end();
+                        }
+                        catch (Exception ex)
+                        {
+                            end();
+                        }
                         break;
                     case 5:
-                        status.Res = "E3S6后转左件开始打标\n" + status.Res;
-                        await MarkAndUpload.MarkE3S6Async(mesMod, LD, data, URL, status, pox1, pox2, pox3, pox4, FineName_L, Lequpment);
+                        try
+                        {
+                            status.Res = "E3S6后转左件开始打标\n" + status.Res;
+                            await MarkAndUpload.MarkE3S6Async(mesMod, LD, data, URL, status, pox1, pox2, pox3, pox4, FineName_L, Lequpment);
+                            end();
+                        }
+                        catch (Exception ex)
+                        {
+                            end();
+                        }
                         break;
                     case 7:
-                        status.Res = "左件开始打标\n" + status.Res;
-                        await MarkAndUpload.MarkW04Async(mesMod, LD, data, URL, status, pox1, pox2, FineName_L, Lequpment);
+                        try
+                        {
+                            status.Res = "左件开始打标\n" + status.Res;
+                            await MarkAndUpload.MarkW04Async(mesMod, LD, data, URL, status, pox1, pox2, FineName_L, Lequpment);
+                            end();
+                        }
+                        catch (Exception ex)
+                        {
+                            end();
+                        }
                         break;
                 }
-
             }
 
             if (status.Lr == 2)
@@ -483,19 +506,42 @@
                     case 2:
                         break;
                     case 4:
-                        status.Res = "E3S6前转右件开始打标\n" + status.Res;
-                        await MarkAndUpload.MarkE3S6Async(mesMod, RD, data, URL, status, pox1, pox2, pox3, pox4, FineName_R, Requpment);
+                        try
+                        {
+                            status.Res = "E3S6前转右件开始打标\n" + status.Res;
+                            await MarkAndUpload.MarkE3S6Async(mesMod, RD, data, URL, status, pox1, pox2, pox3, pox4, FineName_R, Requpment);
+                            end();
+                        }
+                        catch (Exception ex)
+                        {
+                            end();
+                        }
                         break;
                     case 6:
-                        status.Res = "E3S6后转右件开始打标\n" + status.Res;
-                        await MarkAndUpload.MarkE3S6Async(mesMod, RD, data, URL, status, pox1, pox2, pox3, pox4, FineName_R, Requpment);
+                        try
+                        {
+                            status.Res = "E3S6后转右件开始打标\n" + status.Res;
+                            await MarkAndUpload.MarkE3S6Async(mesMod, RD, data, URL, status, pox1, pox2, pox3, pox4, FineName_R, Requpment);
+                            end();
+                        }
+                        catch (Exception ex)
+                        {
+                            end();
+                        }
                         break;
                     case 8:
-                        status.Res = "右件开始打标\n" + status.Res;
-                        await MarkAndUpload.MarkW04Async(mesMod, RD, data, URL, status, pox1, pox2, FineName_R, Requpment);
+                        try
+                        {
+                            status.Res = "右件开始打标\n" + status.Res;
+                            await MarkAndUpload.MarkW04Async(mesMod, RD, data, URL, status, pox1, pox2, FineName_R, Requpment);
+                            end();
+                        }
+                        catch (Exception ex)
+                        {
+                            end();
+                        }
                         break;
                 }
-
             }
         }
 
@@ -561,20 +607,17 @@
                 bool inputExit = false;//默认未完成
                 bool endN = false; //以回车结尾
                 bool includeN = false; //包含回车
-
                 if (textBox1.Text.EndsWith("\r\n") || textBox1.Text.EndsWith("\n") || textBox1.Text.EndsWith("\r"))
                 {
                     Console.WriteLine("字符串以换行符结尾");
                     endN = true;//用户完成输入 //换行了，输入完成
                 }
-
                 if (textBox1.Text.Contains("\r\n") || textBox1.Text.Contains("\n") || textBox1.Text.Contains("\r"))
                 {
                     includeN = true;
                     Console.WriteLine("字符串中存在换行符");
                 }
                 inputExit = (endN || includeN);
-
                 if (isinput && inputExit)
                 {
                     //下一次扫码完成，初始化
@@ -587,7 +630,6 @@
                     else
                     {
                         status.clean();
-
                     }
 
                     if (FreshStatus.LNewCode1 || FreshStatus.RNewCode1)
@@ -600,22 +642,17 @@
                     }
 
                     string code = textBox1.Text.Replace("\r\n", "").Replace("\n", "").Replace("\r", "").Replace(" ", ""); //删除换行
-
                     code = code.ToUpper(); // 示例：将文本转换为大写
                                            // richTextBox1.SelectionStart = richTextBox1.Text.Length; // 保持光标位置
                                            //判断二维码左右件
-
                     int lr = MyTool.isLorR(code, Litem, Ritem);
-
                     if (lr == 1)
                     {
                         FreshStatus.Lcode1 = true;
                         status.ZhuzaomaLab = 2;
                         textBox1.Text = string.Empty;
                         textBox2.Text = code;
-
                         status.IsRecode = !MyTool.isNotCm(code);
-
                         if (!status.IsRecode)
                         {
                             //不重码
@@ -631,9 +668,7 @@
                             status.KehumaLab = 2;
                             status.Lr = 1;
                             status.Res = "铸造重码" + "\n" + status.Res;
-
                         }
-
                     }
                     if (lr == 2)
                     {
@@ -641,9 +676,7 @@
                         status.ZhuzaomaLab = 2;
                         textBox1.Text = string.Empty;
                         textBox2.Text = code;
-
                         status.IsRecode = !MyTool.isNotCm(code);
-
                         if (!status.IsRecode)
                         {
                             //不重码
@@ -684,15 +717,12 @@
         public List<string> UpdateCode(string s)
         {
             string res = s.ToUpper();
-
             List<string> result = new List<string>();
-
             if (res == "L")
             {
                 //生成左件客户码
                 switch (Lid)
                 {
-
                     case 1:
                         //LEO左前
                         break;
