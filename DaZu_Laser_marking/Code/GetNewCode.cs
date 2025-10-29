@@ -162,7 +162,7 @@
 
                 string s4 = year + month + day + number.ToString("00000");
 
-                string s5 = "M06";
+                string s5 = "M05";
                 return (TH + s1 + s2 + s1 + s4 + s1 + s5).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
 
             }
@@ -184,7 +184,7 @@
 
                 string s4 = year + month + day + number.ToString("00000");
 
-                string s5 = "M06";
+                string s5 = "M05";
                 return (TH + s1 + s2 + s1 + s4 + s1 + s5).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
 
             }
