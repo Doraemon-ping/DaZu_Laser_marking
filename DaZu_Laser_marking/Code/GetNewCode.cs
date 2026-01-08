@@ -32,7 +32,7 @@
                 string year = now.Year.ToString();
                 DateTime dt = new DateTime(now.Year, 1, 1);
                 int days = (now.Date - dt.Date).Days + 1;
-                string s3 = "D" + days.ToString() + year.Substring(2, 2);
+                string s3 = "D" + days.ToString("000") + year.Substring(2, 2);
                 string s4 = "V88896";
                 string s5 = "S0001";
 
@@ -60,7 +60,7 @@
                 string year = now.Year.ToString();
                 DateTime dt = new DateTime(now.Year, 1, 1);
                 int days = (now.Date - dt.Date).Days + 1;
-                string s3 = "D" + days.ToString() + year.Substring(2, 2);
+                string s3 = "D" + days.ToString("000") + year.Substring(2, 2);
                 string s4 = "V88896";
                 string s5 = "S0001";
 
@@ -88,7 +88,7 @@
                 string year = now.Year.ToString();
                 DateTime dt = new DateTime(now.Year, 1, 1);
                 int days = (now.Date - dt.Date).Days + 1;
-                string s3 = "D" + days.ToString() + year.Substring(2, 2);
+                string s3 = "D" + days.ToString("000") + year.Substring(2, 2);
                 string s4 = "V88896";
                 string s5 = "S0001";
 
@@ -116,7 +116,7 @@
                 string year = now.Year.ToString();
                 DateTime dt = new DateTime(now.Year, 1, 1);
                 int days = (now.Date - dt.Date).Days + 1;
-                string s3 = "D" + days.ToString() + year.Substring(2, 2);
+                string s3 = "D" + days.ToString("000") + year.Substring(2, 2);
                 string s4 = "V88896";
                 string s5 = "S0001";
 
@@ -162,7 +162,7 @@
 
                 string s4 = year + month + day + number.ToString("00000");
 
-                string s5 = "M05";
+                string s5 = "M07";
                 return (TH + s1 + s2 + s1 + s4 + s1 + s5).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
 
             }
@@ -184,7 +184,7 @@
 
                 string s4 = year + month + day + number.ToString("00000");
 
-                string s5 = "M05";
+                string s5 = "M07";
                 return (TH + s1 + s2 + s1 + s4 + s1 + s5).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
 
             }
@@ -197,42 +197,128 @@
         {
             string result = null;
             string res = s.ToUpper();
+
             SQLite.dataSql dataSql = new SQLite.dataSql();
             int number = dataSql.getNumner() + 1;
-            if (res == "L")
+
+            if (res == "FKLH")
             {
-                DateTime now = DateTime.Now;
+                //左前
+                string S1 = "[>16";
                 string TH = PF.TH1;
-                string s1 = "/";
-                string s2 = "2CZ";
-                string year = now.Year.ToString().Substring(2, 2);
-                string month = now.Month.ToString().Trim();
-                int m = int.Parse(month);
-                if (m == 10) { month = "A"; }
-                if (m == 11) { month = "B"; }
-                if (m == 12) { month = "C"; }
-                String day = now.Day.ToString("00");
-                string s4 = year + month + day + number.ToString("00000");
-                string s5 = "M05";
-                return (TH + s1 + s2 + s1 + s4 + s1 + s5).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+                string BB = "VAJ";
+                DateTime now = DateTime.Now;
+                string year = now.Year.ToString();
+                DateTime dt = new DateTime(now.Year, 1, 1);
+                int days = (now.Date - dt.Date).Days + 1;
+                string s3 = "D" + year.Substring(2, 2) + days.ToString() ;
+                string s4 = "V88896";
+                string s5 = "S";
+
+                string s6 = null;
+                DateTime todayStart = DateTime.Today.AddHours(8); // 今天8点
+                DateTime todayEnd = DateTime.Today.AddHours(20);  // 今天20点
+
+                if (now >= todayStart && now < todayEnd) { s6 = "1"; }
+                else { s6 = "2"; }
+
+                string s7 = "MZK07";
+
+                string s8 = "N";
+
+                string s9 = number.ToString("00000");
+
+                result = S1 + TH + BB + s3 + s4 + s5 + s6 + s7 + s8+s9;
             }
-            if (res == "R")
+            else if (res == "FKRH")
             {
-                DateTime now = DateTime.Now;
+                //右前
+                string S1 = "[>16";
                 string TH = PF.TH1;
-                string s1 = "/";
-                string s2 = "2CZ";
-                string year = now.Year.ToString().Substring(2, 2);
-                string month = now.Month.ToString().Trim();
-                int m = int.Parse(month);
-                if (m == 10) { month = "A"; }
-                if (m == 11) { month = "B"; }
-                if (m == 12) { month = "C"; }
-                String day = now.Day.ToString("00");
-                string s4 = year + month + day + number.ToString("00000");
-                string s5 = "M05";
-                return (TH + s1 + s2 + s1 + s4 + s1 + s5).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+                string BB = "VAJ";
+                DateTime now = DateTime.Now;
+                string year = now.Year.ToString();
+                DateTime dt = new DateTime(now.Year, 1, 1);
+                int days = (now.Date - dt.Date).Days + 1;
+                string s3 = "D" + year.Substring(2, 2) + days.ToString();
+                string s4 = "V88896";
+                string s5 = "S";
+
+                string s6 = null;
+                DateTime todayStart = DateTime.Today.AddHours(8); // 今天8点
+                DateTime todayEnd = DateTime.Today.AddHours(20);  // 今天20点
+
+                if (now >= todayStart && now < todayEnd) { s6 = "1"; }
+                else { s6 = "2"; }
+
+                string s7 = "MZK08";
+
+                string s8 = "N";
+
+                string s9 = number.ToString("00000");
+
+                result = S1 + TH + BB + s3 + s4 + s5 + s6 + s7 + s8 + s9;
+
             }
+            else if (res == "RKLH")
+            {
+                //左HOU
+                string S1 = "[>16";
+                string TH = PF.TH1;
+                string BB = "VAJ";
+                DateTime now = DateTime.Now;
+                string year = now.Year.ToString();
+                DateTime dt = new DateTime(now.Year, 1, 1);
+                int days = (now.Date - dt.Date).Days + 1;
+                string s3 = "D" + year.Substring(2, 2) + days.ToString();
+                string s4 = "V88896";
+                string s5 = "S";
+
+                string s6 = null;
+                DateTime todayStart = DateTime.Today.AddHours(8); // 今天8点
+                DateTime todayEnd = DateTime.Today.AddHours(20);  // 今天20点
+
+                if (now >= todayStart && now < todayEnd) { s6 = "1"; }
+                else { s6 = "2"; }
+
+                string s7 = "SW055";
+
+                string s8 = "N";
+
+                string s9 = number.ToString("00000");
+
+                result = S1 + TH + BB + s3 + s4 + s5 + s6 + s7 + s8 + s9;
+            }
+            else if (res == "RKRH")
+            {
+                //右后
+                string S1 = "[>16";
+                string TH = PF.TH1;
+                string BB = "VAJ";
+                DateTime now = DateTime.Now;
+                string year = now.Year.ToString();
+                DateTime dt = new DateTime(now.Year, 1, 1);
+                int days = (now.Date - dt.Date).Days + 1;
+                string s3 = "D" + year.Substring(2, 2) + days.ToString();
+                string s4 = "V88896";
+                string s5 = "S";
+
+                string s6 = null;
+                DateTime todayStart = DateTime.Today.AddHours(8); // 今天8点
+                DateTime todayEnd = DateTime.Today.AddHours(20);  // 今天20点
+
+                if (now >= todayStart && now < todayEnd) { s6 = "1"; }
+                else { s6 = "2"; }
+
+                string s7 = "SW056";
+
+                string s8 = "N";
+
+                string s9 = number.ToString("00000");
+
+                result = S1 + TH + BB + s3 + s4 + s5 + s6 + s7 + s8 + s9;
+            }
+
             return result;
         }
     }

@@ -197,7 +197,12 @@ namespace DaZu_Laser_marking
                 }
             }
         }
-        public void MarkLeo() { }
+        public void MarkLeo() { 
+        
+        
+        
+        
+        }
 
 
         public static async Task MarkE3S6Async(Model.AddEquipInfo mes,

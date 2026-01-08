@@ -456,6 +456,16 @@
                 {
 
                     case 1:
+                        try
+                        {
+                            status.Res = "LEO前转左件开始打标\n" + status.Res;
+                            await MarkAndUpload.MarkE3S6Async(mesMod, LD, data, URL, status, pox1, pox2, pox3, pox4, FineName_L, Lequpment);
+                            end();
+                        }
+                        catch (Exception ex)
+                        {
+                            end();
+                        }
                         break;
                     case 3:
                         try
@@ -504,6 +514,16 @@
                 {
 
                     case 2:
+                        try
+                        {
+                            status.Res = "LEO前转右件开始打标\n" + status.Res;
+                            await MarkAndUpload.MarkE3S6Async(mesMod, RD, data, URL, status, pox1, pox2, pox3, pox4, FineName_R, Requpment);
+                            end();
+                        }
+                        catch (Exception ex)
+                        {
+                            end();
+                        }
                         break;
                     case 4:
                         try
@@ -725,6 +745,7 @@
                 {
                     case 1:
                         //LEO左前
+                        result.Add(Code.GetNewCode.GetNewCodeLeo("FKLH", Litem));
                         break;
                     case 3:
                         //E3S6左前
@@ -738,6 +759,10 @@
                         //W04L
                         result.Add(Code.GetNewCode.GetNewCodeW04("L", Litem));
                         break;
+                    case 9:
+                        //E3S6左后
+                        result.Add(Code.GetNewCode.GetNewCodeE3S6("RKLH", Litem));
+                        break;
                 }
             }
 
@@ -748,6 +773,7 @@
                 {
 
                     case 2:
+                        result.Add(Code.GetNewCode.GetNewCodeLeo("FKRH", Ritem));
                         break;
                     case 4:
                         result.Add(Code.GetNewCode.GetNewCodeE3S6("FKRH", Ritem));
@@ -758,6 +784,9 @@
                     case 8:
                         result.Add(Code.GetNewCode.GetNewCodeW04("R", Ritem));
                         break;
+                        case 10:
+                        result.Add(Code.GetNewCode.GetNewCodeLeo("RKRH",Ritem));
+                        break; 
                 }
 
             }
