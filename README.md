@@ -3,7 +3,7 @@
 ### 登录
 增加账号密码
 <img width="607" height="515" alt="image" src="https://github.com/user-attachments/assets/13fc375a-d270-4c94-8185-94397f060972" />
-###生产主页
+### 生产主页
 <img width="1416" height="738" alt="image" src="https://github.com/user-attachments/assets/538821ab-4b99-4b84-840a-cab85aca81de" />
 ### 配方管理
 可选多个配方
